@@ -1,0 +1,4 @@
+node_modules/
+bank.db
+.node-version
+package-lock.json

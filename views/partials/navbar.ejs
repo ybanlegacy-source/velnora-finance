@@ -1,0 +1,14 @@
+<nav class="top-nav">
+  <div class="top-nav-brand">VELNORA FINANCE</div>
+  <div class="top-nav-links">
+    <a href="/dashboard" class="<%= active === 'home' ? 'active' : '' %>">Home</a>
+    <a href="/about" class="<%= active === 'about' ? 'active' : '' %>">About Us</a>
+    <a href="/contact" class="<%= active === 'contact' ? 'active' : '' %>">Contact Us</a>
+    <a href="/request-loan" class="<%= active === 'loan' ? 'active' : '' %>">Request Loan</a>
+    <a href="/notifications" class="<%= active === 'notifications' ? 'active' : '' %>">Notifications</a>
+    <a href="/settings" class="<%= active === 'settings' ? 'active' : '' %>">Settings</a>
+  </div>
+  <form method="POST" action="/logout" class="top-nav-logout">
+    <button type="submit">Log out</button>
+  </form>
+</nav>

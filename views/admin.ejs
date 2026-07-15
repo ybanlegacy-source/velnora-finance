@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Bank — Admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — admin panel for class use only</div>
+
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <h1>Admin Panel</h1>
+      <form method="POST" action="/logout">
+        <button class="logout-btn" type="submit">Log out</button>
+      </form>
+    </div>
+
+    <% if (msg) { %>
+      <div class="msg-flash"><%= msg %></div>
+    <% } %>
+
+    <div class="card">
+      <h3 style="margin-top:0; color:#0b4a5c;">Users &amp; balances</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Account</th>
+            <th>Checking balance</th>
+            <th>Savings balance</th>
+            <th>Set new balance</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(u => { %>
+            <tr>
+              <td><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span></td>
+              <td><%= u.account_number %><br><span style="color:#8a97a0;"><%= u.savings_account_number %></span></td>
+              <td><%= fmtMoney(u.balance) %></td>
+              <td><%= fmtMoney(u.savings_balance || 0) %></td>
+              <td>
+                <form class="edit-form" method="POST" action="/admin/set-balance">
+                  <input type="hidden" name="userId" value="<%= u.id %>">
+                  <select name="field">
+                    <option value="balance">Checking</option>
+                    <option value="savings_balance">Savings</option>
+                  </select>
+                  <input type="number" step="0.01" name="newBalance" placeholder="New amount" required>
+                  <input type="text" name="reason" placeholder="Reason (e.g. class demo #3)">
+                  <button type="submit">Update</button>
+                </form>
+              </td>
+              <td><a class="link-quiet" href="/admin/log/<%= u.id %>">View log</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+        <tbody>
+          <% users.forEach(u => { %>
+            <tr>
+              <td><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span></td>
+              <td><%= u.account_number %></td>
+              <td><%= fmtMoney(u.balance) %></td>
+              <td>
+                <form class="edit-form" method="POST" action="/admin/set-balance">
+                  <input type="hidden" name="userId" value="<%= u.id %>">
+                  <input type="number" step="0.01" name="newBalance" placeholder="New amount" required>
+                  <input type="text" name="reason" placeholder="Reason (e.g. class demo #3)">
+                  <button type="submit">Update</button>
+                </form>
+              </td>
+              <td><a class="link-quiet" href="/admin/log/<%= u.id %>">View log</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0; color:#0b4a5c;">Recent demo requests (transfers / withdrawals)</h3>
+      <% if (requests.length === 0) { %>
+        <p style="color:#8a97a0;">No requests submitted yet.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th>User</th><th>Type</th><th>Amount</th><th>Note</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            <% requests.forEach(r => { %>
+              <tr>
+                <td><%= r.full_name %> (@<%= r.username %>)</td>
+                <td><span class="pill-badge"><%= r.type.replace('_',' ') %></span></td>
+                <td><%= fmtMoney(r.amount) %></td>
+                <td><%= r.note %></td>
+                <td><%= new Date(r.created_at).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

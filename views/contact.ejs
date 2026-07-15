@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Demo Bank</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — messages sent here are stored locally only</div>
+  <%- include('partials/navbar', { active: 'contact' }) %>
+
+  <div class="page-wrap">
+    <div class="card">
+      <h1 class="page-title">Contact Us</h1>
+      <p>Have a question about your demo account? Send a message below — it will show up for the admin to review.</p>
+
+      <% if (typeof sent !== 'undefined' && sent) { %>
+        <div class="msg-flash">Your message was sent. Thanks for reaching out.</div>
+      <% } %>
+
+      <form method="POST" action="/contact">
+        <input type="text" name="subject" placeholder="Subject" required>
+        <textarea name="message" rows="5" placeholder="Your message" required></textarea>
+        <button type="submit" class="btn-primary" style="width:auto; padding:11px 22px;">Send message</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

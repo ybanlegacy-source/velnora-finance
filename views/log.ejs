@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balance log — <%= user.full_name %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <h1>Balance log — <%= user.full_name %></h1>
+      <a class="link-quiet" href="/admin">&larr; Back to admin</a>
+    </div>
+
+    <div class="card">
+      <% if (log.length === 0) { %>
+        <p style="color:#8a97a0;">No balance changes recorded yet.</p>
+      <% } else { %>
+       <table>
+          <thead>
+            <tr><th>Account</th><th>Changed by</th><th>Old balance</th><th>New balance</th><th>Reason</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            <% log.forEach(l => { %>
+              <tr>
+                <td><span class="pill-badge"><%= l.field === 'savings_balance' ? 'Savings' : 'Checking' %></span></td>
+                <td><%= l.changed_by %></td>
+                <td><%= fmtMoney(l.old_balance) %></td>
+                <td><%= fmtMoney(l.new_balance) %></td>
+                <td><%= l.reason %></td>
+                <td><%= new Date(l.created_at).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

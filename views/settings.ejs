@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Demo Bank</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — settings only affect this local demo account</div>
+  <%- include('partials/navbar', { active: 'settings' }) %>
+
+  <div class="page-wrap">
+    <div class="card">
+      <h1 class="page-title">Settings</h1>
+
+      <% if (typeof msg !== 'undefined' && msg) { %>
+        <div class="msg-flash"><%= msg %></div>
+      <% } %>
+
+      <h2 class="section-title" style="margin-top:0;">Profile</h2>
+      <form method="POST" action="/settings/profile">
+        <label class="field-label">Full name</label>
+        <input type="text" name="full_name" value="<%= user.full_name %>" required>
+        <button type="submit" class="btn-primary" style="width:auto; padding:11px 22px;">Save name</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title" style="margin-top:0;">Change password</h2>
+      <form method="POST" action="/settings/password">
+        <label class="field-label">Current password</label>
+        <input type="password" name="currentPassword" required>
+        <label class="field-label">New password</label>
+        <input type="password" name="newPassword" required minlength="6">
+        <button type="submit" class="btn-primary" style="width:auto; padding:11px 22px;">Update password</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

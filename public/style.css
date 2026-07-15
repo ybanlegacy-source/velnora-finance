@@ -1,0 +1,489 @@
+:root {
+  --teal-dark: #0a3d91;
+  --teal: #1155cc;
+  --teal-light: #2f7fe8;
+  --teal-pill: #1f66d6;
+  --bg: #e9eaec;
+  --white: #ffffff;
+  --text-dark: #1c2b30;
+  --danger: #c0392b;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+}
+
+/* ---------- LOGIN ---------- */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--teal-dark), var(--teal));
+  padding: 20px;
+}
+.login-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.login-card h1 {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  color: var(--teal-dark);
+}
+.login-card p.sub {
+  color: #667;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+}
+.login-card input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #d8dee0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+.login-card button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: var(--teal-dark);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.login-card button:hover { background: var(--teal); }
+.demo-hint {
+  margin-top: 18px;
+  font-size: 0.75rem;
+  color: #8a97a0;
+  line-height: 1.5;
+}
+.error-msg {
+  background: #fdecea;
+  color: var(--danger);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+.banner {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #f0ad4e;
+  background: #3a2f1a;
+  padding: 6px;
+}
+
+/* ---------- DASHBOARD SHELL ---------- */
+.phone {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+.topbar {
+  background: var(--teal);
+  padding: 16px 20px 28px;
+}
+.topbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.lang-pill {
+  background: var(--teal-pill);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #cfd8dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--teal-dark);
+  border: 2px solid white;
+}
+.brand-mark {
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
+  opacity: 0.9;
+}
+
+.balance-card {
+  background: linear-gradient(160deg, var(--teal-light), var(--teal-dark));
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  color: white;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+/* ---------- BALANCE CARD CAROUSEL (swipeable) ---------- */
+.balance-carousel { position: relative; }
+.balance-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-radius: var(--radius-lg);
+}
+.balance-track::-webkit-scrollbar { display: none; }
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 12px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.dot.active {
+  background: white;
+  transform: scale(1.25);
+}
+.label-pill {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.balance-amount {
+   background: none;
+  color: white;
+  display: inline-block;
+  padding: 0;
+  font-size: clamp(1.3rem, 8vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 18px;
+  word-break: break-word;
+}
+.acct-number {
+  background: none;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
+   font-size: clamp(0.95rem, 4.5vw, 1.2rem);
+}
+.stats-row {
+  display: flex;
+  gap: 12px;
+}
+.stat-box { flex: 1; }
+.stat-value {
+ background: none;
+  color: white;
+  padding: 0;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-top: 8px;
+}
+
+/* ---------- ACTIONS GRID ---------- */
+.actions-panel {
+  background: var(--white);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  margin-top: -14px;
+  flex: 1;
+  padding: 28px 20px 100px;
+}
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px 12px;
+  margin-bottom: 26px;
+}
+.action-item { text-align: center; cursor: pointer; border: none; background: none; }
+.action-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, var(--teal-light), var(--teal-dark));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 1.4rem;
+}
+.action-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.divider { border: none; border-top: 1px solid #e2e5e7; margin: 18px 0; }
+
+/* bottom nav */
+.bottom-nav {
+  max-width: 480px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg);
+  border-top: 1px solid #d5dade;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 14px;
+}
+.nav-item {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--teal-dark);
+  font-weight: 600;
+}
+.nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
+
+/* ---------- MODAL FORM ---------- */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+}
+.modal-box h3 { margin-top: 0; color: var(--teal-dark); }
+.modal-box input, .modal-box select, .modal-box textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8dee0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions button {
+  flex: 1;
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary { background: var(--teal-dark); color: white; }
+.btn-cancel { background: #eceff1; color: #444; }
+
+/* ---------- ADMIN ---------- */
+.admin-wrap { max-width: 900px; margin: 0 auto; padding: 24px; }
+.admin-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.admin-header h1 { color: var(--teal-dark); font-size: 1.3rem; }
+.logout-btn {
+  background: none; border: 1px solid var(--teal-dark); color: var(--teal-dark);
+  padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+.card {
+  background: white; border-radius: 14px; padding: 20px; margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #eef0f1; }
+th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.pill-badge {
+  display: inline-block; padding: 3px 9px; border-radius: 12px;
+  font-size: 0.72rem; font-weight: 700; background: #e6f4ea; color: #2e7d32;
+}
+.edit-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.edit-form input { padding: 7px 10px; border: 1px solid #d8dee0; border-radius: 6px; font-size: 0.85rem; }
+.edit-form button {
+  background: var(--teal-dark); color: white; border: none; padding: 8px 14px;
+  border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.82rem;
+}
+.msg-flash {
+  background: #e6f4ea; color: #2e7d32; padding: 10px 14px; border-radius: 8px;
+  margin-bottom: 18px; font-size: 0.88rem;
+}
+.link-quiet { color: var(--teal); font-size: 0.8rem; text-decoration: none; }
+.link-quiet:hover { text-decoration: underline; }
+
+/* ---------- TOP NAV (shared across linked pages) ---------- */
+.top-nav {
+  background: var(--teal-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.top-nav-brand { color: white; font-weight: 800; font-size: 1.1rem; }
+.top-nav-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.top-nav-links a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 4px;
+  border-bottom: 2px solid transparent;
+}
+.top-nav-links a:hover { color: white; }
+.top-nav-links a.active { color: white; border-bottom: 2px solid white; }
+.top-nav-logout button {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.top-nav-logout button:hover { background: rgba(255,255,255,0.22); }
+
+/* ---------- GENERIC CONTENT PAGES (About, Contact, Loan, Settings, Notifications) ---------- */
+.page-wrap { max-width: 720px; margin: 0 auto; padding: 28px 20px 80px; }
+.page-title { color: var(--teal-dark); font-size: 1.5rem; margin-top: 0; margin-bottom: 14px; }
+.section-title { color: var(--teal-dark); font-size: 1.05rem; margin-bottom: 10px; }
+.page-wrap .card p { line-height: 1.6; color: #33454b; }
+.page-wrap .card ul { line-height: 1.8; color: #33454b; }
+.page-wrap form { display: flex; flex-direction: column; gap: 4px; }
+.page-wrap input,
+.page-wrap select,
+.page-wrap textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #d8dee0;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+  font-family: inherit;
+}
+.field-label { font-size: 0.78rem; font-weight: 700; color: #667; margin-bottom: 4px; }
+
+/* notifications list */
+.notif-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid #eef0f1;
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-icon {
+  width: 38px; height: 38px;
+  background: var(--teal-dark);
+  color: white;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.notif-text { font-size: 0.9rem; color: var(--text-dark); font-weight: 600; }
+.notif-date { font-size: 0.75rem; color: #8a97a0; margin-top: 2px; }
+/* ---------- RESPONSIVE: TABLET / DESKTOP ---------- */
+/* Below this breakpoint, everything above behaves exactly like the mobile
+   "phone card" layout. Above it, we switch to a wider side-by-side layout. */
+@media (min-width: 900px) {
+  .phone {
+    max-width: 1200px;
+    min-height: auto;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 32px 24px 60px;
+  }
+
+  .topbar {
+    flex: 0 0 400px;
+    border-radius: 22px;
+    padding: 28px;
+  }
+
+  .balance-amount { font-size: 2.3rem; }
+
+  .actions-panel {
+    flex: 1;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+    margin-top: 0;
+    padding: 32px;
+    padding-bottom: 32px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+
+  .action-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 640px;
+  }
+
+  /* Bottom mobile nav is redundant with the top nav on larger screens */
+  .bottom-nav { display: none; }
+}
+
+@media (min-width: 1300px) {
+  .phone { max-width: 1320px; }
+}
+
+/* Generic content pages (About, Contact, Loan, Settings, Notifications, Admin)
+   already use max-width containers, so they scale naturally — just give them
+   a bit more breathing room on wider screens. */
+@media (min-width: 900px) {
+  .page-wrap { padding-top: 40px; }
+  .admin-wrap { padding-top: 32px; }
+}

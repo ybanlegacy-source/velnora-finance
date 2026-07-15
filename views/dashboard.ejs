@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Bank — Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Velnora Finance — balances are fictional, set by the admin for class purposes</div>
+  <%- include('partials/navbar', { active: 'home' }) %>
+
+  <div class="phone">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="lang-pill">🇬🇧 English</div>
+        <div class="avatar"><%= user.full_name ? user.full_name[0] : 'U' %></div>
+      </div>
+      <div class="brand-mark">Welcome Back</div>
+
+      <div class="balance-carousel">
+        <div class="balance-track" id="balanceTrack">
+          <div class="balance-card">
+            <div class="label-pill">Check in balance</div>
+            <div class="balance-amount"><%= fmtMoney(user.balance) %></div>
+
+         <div class="label-pill">Account number</div>
+            <div class="acct-number">•••• <%= user.account_number ? user.account_number.replace('****','') : '0000' %></div>
+
+        <div class="stats-row">
+              <div class="stat-box">
+                <div class="label-pill">Total credit</div>
+                <div class="stat-value"><%= fmtMoney(user.total_credit) %></div>
+              </div>
+         <div class="stat-box">
+                <div class="label-pill">Total charge</div>
+                <div class="stat-value"><%= fmtMoney(user.total_charge) %></div>
+              </div>
+            </div>
+          </div>
+		  <div class="balance-card">
+            <div class="label-pill">Savings balance</div>
+            <div class="balance-amount"><%= fmtMoney(user.savings_balance || 0) %></div>
+
+            <div class="label-pill">Account number</div>
+            <div class="acct-number">•••• <%= user.savings_account_number ? user.savings_account_number.replace('****','') : '0000' %></div>
+			<div class="stats-row">
+              <div class="stat-box">
+                <div class="label-pill">Account type</div>
+                <div class="stat-value" style="font-size:0.95rem;">Savings</div>
+              </div>
+              <div class="stat-box">
+                <div class="label-pill">Status</div>
+                <div class="stat-value" style="font-size:0.95rem;">Active</div>
+              </div>
+            </div>
+          </div>
+        </div>
+		<div class="carousel-dots" id="carouselDots">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-panel">
+      <div class="action-grid">
+        <button class="action-item" onclick="openModal('bank_transfer','Bank transfer')">
+          <div class="action-icon">↗</div>
+          <div class="action-label">Bank transfer</div>
+        </button>
+        <button class="action-item" onclick="openModal('local_transfer','Local transfer')">
+          <div class="action-icon">↗</div>
+          <div class="action-label">Savings Account</div>
+        </button>
+        <button class="action-item" onclick="openModal('internal_transfer','Internal transfer')">
+          <div class="action-icon">↗</div>
+          <div class="action-label">Internal transfer</div>
+        </button>
+      </div>
+
+      <hr class="divider">
+
+      <div class="action-grid">
+        <button class="action-item" onclick="openModal('withdrawal','Withdrawal request')">
+          <div class="action-icon">฿</div>
+          <div class="action-label">Withdraw</div>
+        </button>
+        <a href="/request-loan" class="action-item" style="text-decoration:none; color:inherit;">
+          <div class="action-icon">▤</div>
+          <div class="action-label">Request loan</div>
+        </a>
+        <div class="action-item">
+          <div class="action-icon">＋</div>
+          <div class="action-label">Add recipient</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h3 style="color:#0b4a5c; font-size:0.95rem;">Recent requests</h3>
+      <% if (requests.length === 0) { %>
+        <p style="color:#8a97a0; font-size:0.85rem;">No requests yet. Use the buttons above to submit one.</p>
+      <% } else { %>
+        <table style="width:100%; font-size:0.85rem;">
+          <% requests.forEach(r => { %>
+            <tr style="border-bottom:1px solid #eef0f1;">
+              <td style="padding:8px 4px;"><%= r.type.replace('_',' ') %></td>
+              <td style="padding:8px 4px;"><%= fmtMoney(r.amount) %></td>
+              <td style="padding:8px 4px; color:#8a97a0;"><%= new Date(r.created_at).toLocaleDateString() %></td>
+            </tr>
+          <% }) %>
+        </table>
+      <% } %>
+    </div>
+
+    <div class="bottom-nav">
+      <a href="/settings" class="nav-item"><span class="nav-icon">⚙</span>Settings</a>
+      <a href="/notifications" class="nav-item"><span class="nav-icon">✉</span>Notifications</a>
+      <a href="/dashboard" class="nav-item"><span class="nav-icon">⌂</span>Home</a>
+      <a href="/contact" class="nav-item"><span class="nav-icon">💬</span>Support</a>
+      <form method="POST" action="/logout" style="margin:0;">
+        <button type="submit" class="nav-item" style="background:none;border:none;">
+          <span class="nav-icon">⇥</span>Log out
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for demo transfer/withdrawal requests -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <h3 id="modalTitle">Request</h3>
+      <form method="POST" action="/request">
+        <input type="hidden" name="type" id="modalType">
+        <input type="number" step="0.01" name="amount" placeholder="Amount (€)" required>
+        <textarea name="note" placeholder="Note (optional)" rows="3"></textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Submit</button>
+        </div>
+      </form>
+      <p style="font-size:0.72rem; color:#8a97a0; margin-top:10px; margin-bottom:0;">
+        This is a demo form. No real transfer occurs — it just logs a request for class purposes.
+      </p>
+    </div>
+  </div>
+
+ <script>
+    function openModal(type, label) {
+      document.getElementById('modalType').value = type;
+      document.getElementById('modalTitle').innerText = label;
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    // ---- Balance card carousel (swipe on mobile, click dots on desktop) ----
+    (function () {
+      const track = document.getElementById('balanceTrack');
+      const dots = document.querySelectorAll('#carouselDots .dot');
+      if (!track) return;
+
+      function updateActiveDot() {
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      }
+
+      track.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateActiveDot);
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const i = parseInt(dot.dataset.index, 10);
+          track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        const activeIndex = [...dots].findIndex(d => d.classList.contains('active'));
+        track.scrollTo({ left: activeIndex * track.clientWidth, behavior: 'auto' });
+      });
+    })();
+  </script>
+</body>
+</html>

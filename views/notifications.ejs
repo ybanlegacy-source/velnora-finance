@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications — Demo Bank</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — notifications are generated from your account activity</div>
+  <%- include('partials/navbar', { active: 'notifications' }) %>
+
+  <div class="page-wrap">
+    <div class="card">
+      <h1 class="page-title">Notifications</h1>
+
+      <% if (items.length === 0) { %>
+        <p style="color:#8a97a0;">No activity yet. Notifications appear here when your balance changes or you submit a request.</p>
+      <% } else { %>
+        <% items.forEach(n => { %>
+          <div class="notif-item">
+            <div class="notif-icon"><%= n.icon %></div>
+            <div>
+              <div class="notif-text"><%= n.text %></div>
+              <div class="notif-date"><%= new Date(n.date).toLocaleString() %></div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

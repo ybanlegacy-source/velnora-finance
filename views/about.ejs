@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Demo Bank</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — fictional bank for coursework</div>
+  <%- include('partials/navbar', { active: 'about' }) %>
+
+  <div class="page-wrap">
+    <div class="card">
+      <h1 class="page-title">About Demo Bank</h1>
+      <p>
+        Demo Bank is a fictional banking dashboard built as a student project.
+        It exists to demonstrate core web development skills — authentication,
+        server-rendered pages, forms, and an admin/user permission split —
+        using a banking theme as the subject matter.
+      </p>
+      <p>
+        No part of this site is connected to a real financial institution,
+        payment processor, or real user funds. Every balance, transaction,
+        and account number shown here is fictional data created for this
+        class project.
+      </p>
+      <h2 class="section-title">What this project demonstrates</h2>
+      <ul>
+        <li>User authentication with hashed passwords (bcrypt)</li>
+        <li>Role-based access: regular user dashboard vs. admin panel</li>
+        <li>An auditable log of every balance change (who, when, why)</li>
+        <li>Linked multi-page navigation (Home, About, Contact, Loan, Settings, Notifications)</li>
+        <li>Form handling and server-side rendering with EJS</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Bank — Sign In</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — no real money or accounts involved</div>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>VELNORA FINANCE</h1>
+      <p class="sub">Online Banking Re invented</p>
+
+      <% if (error) { %>
+        <div class="error-msg"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/login">
+        <input type="text" name="username" placeholder="Username" required autofocus>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Sign In</button>
+      </form>
+
+      <div class="demo-hint">
+        Demo accounts —<br>
+        User: <strong>demo / demo123</strong><br>
+        Admin: <strong>admin / admin123</strong>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
