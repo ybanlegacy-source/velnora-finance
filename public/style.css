@@ -522,20 +522,24 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 
 /* ================= MOBILE LAYOUT: cards in rows, smaller banners ================= */
 @media (max-width: 640px) {
+  /* Utility bar breathing room */
   .utility-inner { padding: 10px 16px; }
   .main-menu-inner { padding: 6px 16px; }
 
+  /* Hero */
   .hero-left { padding: 36px 18px; }
   .hero-left h1 { font-size: 1.6rem; }
   .hero-left p { font-size: 0.92rem; }
   .hero-cta-pill { padding: 12px 22px; font-size: 0.88rem; }
   .hero-right { min-height: 220px; }
 
+  /* Promo banner */
   .promo-banner { padding: 28px 16px; }
   .promo-text h2 { font-size: 1.2rem; }
   .promo-text p { font-size: 0.88rem; }
   .promo-pill { padding: 11px 20px; font-size: 0.85rem; }
 
+  /* Feature cards — 2 per row instead of 1 */
   .feature-section { padding: 40px 16px; }
   .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .feature-card { padding: 16px 12px; }
@@ -544,32 +548,38 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .feature-card p { font-size: 0.78rem; line-height: 1.5; }
   .feature-link { font-size: 0.78rem; }
 
+  /* Kids savings — 2 columns instead of stacked */
   .kids-savings-section { padding: 40px 16px; }
   .kids-savings-header h2 { font-size: 1.4rem; }
   .kids-savings-columns { flex-direction: row; flex-wrap: wrap; gap: 14px; }
   .kids-savings-col { flex: 1 1 45%; }
   .kids-savings-col h3 { font-size: 0.9rem; }
 
+  /* Enquiry banner */
   .enquiry-banner { padding: 28px 16px; }
   .enquiry-text h2 { font-size: 1.2rem; }
   .enquiry-text p { font-size: 0.88rem; }
   .enquiry-pill { padding: 11px 20px; font-size: 0.85rem; }
 
+  /* Features spotlight */
   .features-spotlight-section { padding: 40px 16px; }
   .features-spotlight-text h2 { font-size: 1.4rem; }
   .features-spotlight-text p { font-size: 0.9rem; }
 
+  /* Fraud / security section */
   .fraud-section { padding: 40px 16px; }
   .fraud-text h2 { font-size: 1.4rem; }
   .fraud-text p { font-size: 0.9rem; }
-  .fraud-actions { flex-direction: column; align-items: stretch; }
-  .fraud-actions a { text-align: center; }
+  .fraud-actions { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+  .fraud-actions a { flex: 1 1 auto; text-align: center; padding: 11px 14px; font-size: 0.82rem; }
 
+  /* Blueprint section (if present) */
   .blueprint-section { padding: 40px 16px; }
   .blueprint-text h2 { font-size: 1.4rem; }
-  .blueprint-actions { flex-direction: column; align-items: stretch; }
-  .blueprint-actions a { text-align: center; }
+  .blueprint-actions { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+  .blueprint-actions a { flex: 1 1 auto; text-align: center; padding: 11px 14px; font-size: 0.82rem; }
 
+  /* More Insights grid — 2 per row instead of 1 */
   .insights-section { padding: 40px 16px; }
   .insights-inner { padding-left: 18px; }
   .insights-header h2 { font-size: 1.4rem; }
@@ -579,11 +589,13 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .insight-card-category { font-size: 0.62rem; }
   .insight-card-body h3 { font-size: 0.8rem; }
 
+  /* CTA banner */
   .cta-banner { padding: 40px 16px; }
   .cta-banner h2 { font-size: 1.3rem; }
   .cta-banner p { font-size: 0.88rem; }
 
-  .site-footer { padding: 32px 16px; }
+  /* Footer */
+  .site-footer { padding: 32px 16px; } 
   .footer-links { gap: 14px; }
   .footer-links a { font-size: 0.78rem; }
 }
