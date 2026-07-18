@@ -488,6 +488,106 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .admin-wrap { padding-top: 32px; }
 }
 
+/* ================= MOBILE NAV (hamburger menu) ================= */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--teal-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+
+  .main-menu-inner { padding: 6px 24px; }
+
+  .main-menu-links {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+  .main-menu-links.open { display: flex; }
+  .main-menu-links a {
+    padding: 12px 4px;
+    border-bottom: 1px solid #eef0f1;
+    font-size: 0.92rem;
+  }
+}
+
+/* ================= MOBILE LAYOUT: cards in rows, smaller banners ================= */
+@media (max-width: 640px) {
+  .utility-inner { padding: 10px 16px; }
+  .main-menu-inner { padding: 6px 16px; }
+
+  .hero-left { padding: 36px 18px; }
+  .hero-left h1 { font-size: 1.6rem; }
+  .hero-left p { font-size: 0.92rem; }
+  .hero-cta-pill { padding: 12px 22px; font-size: 0.88rem; }
+  .hero-right { min-height: 220px; }
+
+  .promo-banner { padding: 28px 16px; }
+  .promo-text h2 { font-size: 1.2rem; }
+  .promo-text p { font-size: 0.88rem; }
+  .promo-pill { padding: 11px 20px; font-size: 0.85rem; }
+
+  .feature-section { padding: 40px 16px; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .feature-card { padding: 16px 12px; }
+  .feature-icon { font-size: 1.3rem; margin-bottom: 8px; }
+  .feature-card h3 { font-size: 0.92rem; }
+  .feature-card p { font-size: 0.78rem; line-height: 1.5; }
+  .feature-link { font-size: 0.78rem; }
+
+  .kids-savings-section { padding: 40px 16px; }
+  .kids-savings-header h2 { font-size: 1.4rem; }
+  .kids-savings-columns { flex-direction: row; flex-wrap: wrap; gap: 14px; }
+  .kids-savings-col { flex: 1 1 45%; }
+  .kids-savings-col h3 { font-size: 0.9rem; }
+
+  .enquiry-banner { padding: 28px 16px; }
+  .enquiry-text h2 { font-size: 1.2rem; }
+  .enquiry-text p { font-size: 0.88rem; }
+  .enquiry-pill { padding: 11px 20px; font-size: 0.85rem; }
+
+  .features-spotlight-section { padding: 40px 16px; }
+  .features-spotlight-text h2 { font-size: 1.4rem; }
+  .features-spotlight-text p { font-size: 0.9rem; }
+
+  .fraud-section { padding: 40px 16px; }
+  .fraud-text h2 { font-size: 1.4rem; }
+  .fraud-text p { font-size: 0.9rem; }
+  .fraud-actions { flex-direction: column; align-items: stretch; }
+  .fraud-actions a { text-align: center; }
+
+  .blueprint-section { padding: 40px 16px; }
+  .blueprint-text h2 { font-size: 1.4rem; }
+  .blueprint-actions { flex-direction: column; align-items: stretch; }
+  .blueprint-actions a { text-align: center; }
+
+  .insights-section { padding: 40px 16px; }
+  .insights-inner { padding-left: 18px; }
+  .insights-header h2 { font-size: 1.4rem; }
+  .insights-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .insight-card-image { height: 90px; }
+  .insight-card-body { padding: 10px; }
+  .insight-card-category { font-size: 0.62rem; }
+  .insight-card-body h3 { font-size: 0.8rem; }
+
+  .cta-banner { padding: 40px 16px; }
+  .cta-banner h2 { font-size: 1.3rem; }
+  .cta-banner p { font-size: 0.88rem; }
+
+  .site-footer { padding: 32px 16px; }
+  .footer-links { gap: 14px; }
+  .footer-links a { font-size: 0.78rem; }
+}
+
 /* ================= PUBLIC HOMEPAGE ================= */
 
 /* ---------- Public nav (utility bar + main menu) ---------- */

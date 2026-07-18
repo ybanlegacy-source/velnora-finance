@@ -1,11 +1,9 @@
 <header class="public-header">
   <div class="utility-bar">
     <div class="utility-inner">
-
       <a href="/" class="public-brand">
         <img src="/images/logo.png" alt="Velnora Finance" class="brand-logo">
       </a>
-
       <div class="utility-right">
         <a href="/contact" class="utility-link">📞 Contact us</a>
         <button class="utility-search" type="button" aria-label="Search" onclick="alert('Search is not wired up in this demo yet.')">🔍 Search</button>
@@ -16,7 +14,8 @@
   </div>
   <div class="main-menu-bar">
     <div class="main-menu-inner">
-      <nav class="main-menu-links">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰ Menu</button>
+      <nav class="main-menu-links" id="mainMenuLinks">
         <a href="/#checking">Checking Account</a>
         <a href="/#savings">Savings Account</a>
         <a href="/#loans">Loans</a>
@@ -27,3 +26,15 @@
     </div>
   </div>
 </header>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('menuToggle');
+    var menu = document.getElementById('mainMenuLinks');
+    if (!toggle || !menu) return;
+    toggle.addEventListener('click', function () {
+      menu.classList.toggle('open');
+      toggle.classList.toggle('active');
+    });
+  })();
+</script>
