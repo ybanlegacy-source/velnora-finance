@@ -5,9 +5,11 @@
         <img src="/images/logo.png" alt="Velnora Finance" class="brand-logo">
       </a>
       <div class="utility-right">
-        <a href="/contact" class="utility-link">📞 Contact us</a>
-        <button class="utility-search" type="button" aria-label="Search" onclick="alert('Search is not wired up in this demo yet.')">🔍 Search</button>
-        <a href="/login" class="utility-link">Log in</a>
+        <div class="utility-secondary">
+          <a href="/contact" class="utility-link">📞 Contact us</a>
+          <button class="utility-search" type="button" aria-label="Search" onclick="alert('Search is not wired up in this demo yet.')">🔍 Search</button>
+          <a href="/login" class="utility-link">Log in</a>
+        </div>
         <a href="/create-account" class="btn-create-account">Create Account</a>
       </div>
     </div>
@@ -22,6 +24,10 @@
         <a href="/#cards">Cards</a>
         <a href="/about">About Us</a>
         <a href="/contact">Help and Support</a>
+       <a href="/contact" class="mobile-only-menu-item">📞 Contact us</a>
+        <a href="#" class="mobile-only-menu-item" onclick="alert('Search is not wired up in this demo yet.'); return false;">🔍 Search</a>
+        <a href="/login" class="mobile-only-menu-item">Log in</a>
+        <a href="/create-account" class="mobile-only-menu-item mobile-menu-cta">Create Account</a>
       </nav>
     </div>
   </div>

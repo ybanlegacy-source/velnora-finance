@@ -92,6 +92,7 @@ body {
   background: #3a2f1a;
   padding: 6px;
 }
+.banner { display: none; }
 
 /* ---------- DASHBOARD SHELL ---------- */
 .phone {
@@ -602,11 +603,32 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .cta-banner h2 { font-size: 1.3rem; }
   .cta-banner p { font-size: 0.88rem; }
 
-  /* Footer */
-  .site-footer { padding: 32px 16px; } 
+ /* Footer */
+  .site-footer { padding: 32px 16px; }
   .footer-links { gap: 14px; }
   .footer-links a { font-size: 0.78rem; }
+
+/* Hide the entire utility-right group (secondary links + Create Account
+     button) on mobile — the logo becomes the only thing in the top bar */
+  .utility-right { display: none !important; }
+  .utility-inner { justify-content: center !important; }
+
+  /* Show the duplicate Contact us / Search / Log in / Create Account items,
+     but only inside the mobile hamburger dropdown */
+  .mobile-only-menu-item { display: block !important; }
+  .mobile-menu-cta {
+    background: var(--teal-dark) !important;
+    color: white !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+    margin-top: 8px !important;
+    border-bottom: none !important;
+  }
 }
+
+/* Hide the mobile-only duplicate menu items on desktop/tablet
+   so they don't show twice alongside the utility bar */
+.mobile-only-menu-item { display: none; }
 
 /* ================= PUBLIC HOMEPAGE ================= */
 
@@ -633,6 +655,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 }
 .utility-link:hover { color: var(--teal-dark); }
 .utility-right { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.utility-secondary { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 .utility-search {
   background: none;
   border: none;
