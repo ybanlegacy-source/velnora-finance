@@ -8,7 +8,11 @@
 </head>
 <body>
   <div class="banner">Demo project — messages sent here are stored locally only</div>
-  <%- include('partials/navbar', { active: 'contact' }) %>
+  <% if (loggedIn) { %>
+    <%- include('partials/navbar', { active: 'contact' }) %>
+  <% } else { %>
+    <%- include('partials/public-nav') %>
+  <% } %>
 
   <div class="page-wrap">
     <div class="card">

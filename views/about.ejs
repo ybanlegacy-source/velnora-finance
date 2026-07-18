@@ -7,8 +7,12 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="banner">Demo project — fictional bank for coursework</div>
-  <%- include('partials/navbar', { active: 'about' }) %>
+ <div class="banner">Demo project — fictional bank for coursework</div>
+  <% if (loggedIn) { %>
+    <%- include('partials/navbar', { active: 'about' }) %>
+  <% } else { %>
+    <%- include('partials/public-nav') %>
+  <% } %>
 
   <div class="page-wrap">
     <div class="card">

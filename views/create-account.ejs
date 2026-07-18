@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Velnora Finance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — accounts created here are fictional and stored locally only</div>
+  <%- include('partials/public-nav') %>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Create your account</h1>
+      <p class="sub">Takes less than a minute. You'll start with a $0 balance the admin can adjust for class demos.</p>
+
+      <% if (error) { %>
+        <div class="error-msg"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/create-account">
+        <label class="field-label">Full name</label>
+        <input type="text" name="full_name" placeholder="Jane Doe" required value="<%= typeof full_name !== 'undefined' ? full_name : '' %>">
+
+        <label class="field-label">Username</label>
+        <input type="text" name="username" placeholder="janedoe" required value="<%= typeof username !== 'undefined' ? username : '' %>">
+
+        <label class="field-label">Password</label>
+        <input type="password" name="password" placeholder="At least 6 characters" required minlength="6">
+
+        <label class="field-label">Confirm password</label>
+        <input type="password" name="confirmPassword" placeholder="Re-enter password" required minlength="6">
+
+        <button type="submit" class="btn-hero-primary" style="width:100%; text-align:center; margin-top:10px; display:block;">Create Account</button>
+      </form>
+
+      <p class="auth-alt">Already have an account? <a href="/login">Log in here</a></p>
+    </div>
+  </div>
+</body>
+</html>

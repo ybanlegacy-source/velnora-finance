@@ -36,9 +36,63 @@ function requireAdmin(req, res, next) {
 function fmtMoney(n) {
   return '€' + Number(n).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+function randomAccountNumber() {
+  return '****' + Math.floor(1000 + Math.random() * 9000);
+}
 
-// ---------- auth ----------
-app.get('/', (req, res) => res.redirect(req.session.userId ? '/dashboard' : '/login'));
+// ---------- public homepage ----------
+app.get('/', (req, res) => {
+  if (req.session.userId) {
+    return res.redirect(req.session.role === 'admin' ? '/admin' : '/dashboard');
+  }
+  const posts = db.prepare('SELECT * FROM blog_posts ORDER BY id ASC').all();
+  res.render('home', { posts });
+});
+
+// ---------- blog posts ----------
+app.get('/blog/:slug', (req, res) => {
+  const post = db.prepare('SELECT * FROM blog_posts WHERE slug = ?').get(req.params.slug);
+  if (!post) return res.redirect('/');
+  res.render('blog-post', { post, loggedIn: !!req.session.userId });
+});
+
+// ---------- create account (real signup) ----------
+app.get('/create-account', (req, res) => {
+  if (req.session.userId) return res.redirect('/dashboard');
+  res.render('create-account', { error: null });
+});
+
+app.post('/create-account', (req, res) => {
+  const { full_name, username, password, confirmPassword } = req.body;
+
+  if (!full_name || !username || !password || !confirmPassword) {
+    return res.render('create-account', { error: 'Please fill in every field.', full_name, username });
+  }
+  if (password !== confirmPassword) {
+    return res.render('create-account', { error: 'Passwords do not match.', full_name, username });
+  }
+  if (password.length < 6) {
+    return res.render('create-account', { error: 'Password must be at least 6 characters.', full_name, username });
+  }
+
+  const existing = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
+  if (existing) {
+    return res.render('create-account', { error: 'That username is already taken.', full_name, username: '' });
+  }
+
+  const passwordHash = bcrypt.hashSync(password, 10);
+  const checkingAccountNumber = randomAccountNumber();
+  const savingsAccountNumber = randomAccountNumber();
+
+  const result = db.prepare(`
+    INSERT INTO users (username, password_hash, role, full_name, account_number, balance, total_credit, total_charge, savings_balance, savings_account_number)
+    VALUES (?, ?, 'user', ?, ?, 0, 0, 0, 0, ?)
+  `).run(username, passwordHash, full_name, checkingAccountNumber, savingsAccountNumber);
+
+  req.session.userId = result.lastInsertRowid;
+  req.session.role = 'user';
+  res.redirect('/dashboard');
+});
 
 app.get('/login', (req, res) => {
   res.render('login', { error: null });
@@ -77,19 +131,19 @@ app.post('/request', requireLogin, (req, res) => {
 });
 
 // ---------- about / contact ----------
-app.get('/about', requireLogin, (req, res) => {
-  res.render('about', {});
+app.get('/about', (req, res) => {
+  res.render('about', { loggedIn: !!req.session.userId });
 });
 
-app.get('/contact', requireLogin, (req, res) => {
-  res.render('contact', { sent: false });
+app.get('/contact', (req, res) => {
+  res.render('contact', { sent: false, loggedIn: !!req.session.userId });
 });
 
-app.post('/contact', requireLogin, (req, res) => {
+app.post('/contact', (req, res) => {
   const { subject, message } = req.body;
   db.prepare('INSERT INTO contact_messages (user_id, subject, message) VALUES (?, ?, ?)')
-    .run(req.session.userId, subject, message);
-  res.render('contact', { sent: true });
+    .run(req.session.userId || null, subject, message);
+  res.render('contact', { sent: true, loggedIn: !!req.session.userId });
 });
 
 // ---------- request loan ----------
