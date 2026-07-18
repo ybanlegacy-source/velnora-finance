@@ -505,14 +505,14 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 
   .main-menu-inner { padding: 6px 24px; }
 
-  .main-menu-links {
-    display: none;
+.main-menu-links {
+    display: none !important;
     flex-direction: column;
     gap: 0;
     width: 100%;
     padding-bottom: 8px;
   }
-  .main-menu-links.open { display: flex; }
+  .main-menu-links.open { display: flex !important; }
   .main-menu-links a {
     padding: 12px 4px;
     border-bottom: 1px solid #eef0f1;
@@ -539,9 +539,9 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .promo-text p { font-size: 0.88rem; }
   .promo-pill { padding: 11px 20px; font-size: 0.85rem; }
 
-  /* Feature cards — 2 per row instead of 1 */
+/* Feature cards — 2 per row instead of 1 */
   .feature-section { padding: 40px 16px; }
-  .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
   .feature-card { padding: 16px 12px; }
   .feature-icon { font-size: 1.3rem; margin-bottom: 8px; }
   .feature-card h3 { font-size: 0.92rem; }
@@ -583,7 +583,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .insights-section { padding: 40px 16px; }
   .insights-inner { padding-left: 18px; }
   .insights-header h2 { font-size: 1.4rem; }
-  .insights-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+   .insights-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
   .insight-card-image { height: 90px; }
   .insight-card-body { padding: 10px; }
   .insight-card-category { font-size: 0.62rem; }
