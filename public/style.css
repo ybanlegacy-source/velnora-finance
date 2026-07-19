@@ -372,7 +372,8 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   flex-wrap: wrap;
   gap: 10px;
 }
-.top-nav-brand { color: white; font-weight: 800; font-size: 1.1rem; }
+.top-nav-brand { display: flex; align-items: center; text-decoration: none; }
+.top-nav-brand .brand-logo { height: 40px; width: auto; }
 .top-nav-links { display: flex; gap: 18px; flex-wrap: wrap; }
 .top-nav-links a {
   color: rgba(255,255,255,0.8);
@@ -1225,4 +1226,23 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   font-weight: 700;
   line-height: 1.4;
   margin: 0;
+}
+
+/* ================= DASHBOARD MOBILE HEADER ================= */
+/* On mobile, the dashboard shows a single row (language / logo / avatar)
+   instead of the full top-nav menu — matches the phone-native reference. */
+.topbar-mobile-only { display: none; }
+
+@media (max-width: 640px) {
+  .top-nav-hide-mobile { display: none !important; }
+
+  .topbar-desktop-only { display: none !important; }
+
+  .topbar-mobile-only {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .topbar-mobile-logo { height: 32px; width: auto; }
 }

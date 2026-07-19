@@ -1,5 +1,7 @@
-<nav class="top-nav">
-  <div class="top-nav-brand">VELNORA FINANCE</div>
+<nav class="top-nav<%= typeof hideOnMobile !== 'undefined' && hideOnMobile ? ' top-nav-hide-mobile' : '' %>"></nav>
+  <a href="/dashboard" class="top-nav-brand">
+    <img src="/images/logo2.png" alt="Velnora Finance" class="brand-logo">
+  </a>
   <div class="top-nav-links">
     <a href="/dashboard" class="<%= active === 'home' ? 'active' : '' %>">Home</a>
     <a href="/about" class="<%= active === 'about' ? 'active' : '' %>">About Us</a>
