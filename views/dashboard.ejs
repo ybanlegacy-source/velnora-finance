@@ -9,23 +9,20 @@
 
 <body>
   <div class="banner">Demo project — balances are fictional, set by the admin for class purposes</div>
-  <%- include('partials/navbar', { active: 'home', hideOnMobile: true }) %>
 
   <div class="phone">
     <div class="topbar">
-      <!-- Desktop/tablet header (unchanged) -->
-      <div class="topbar-row topbar-desktop-only">
-        <div class="lang-pill">🇬🇧 English</div>
-        <div class="avatar"><%= user.full_name ? user.full_name[0] : 'U' %></div>
-      </div>
-      <div class="brand-mark topbar-desktop-only">Welcome Back</div>
-
-      <!-- Mobile-only header: language left, logo centered, avatar right -->
-      <div class="topbar-row-mobile topbar-mobile-only">
+      <!-- Single header row at every screen size: language left, logo centered, avatar right -->
+      <div class="topbar-row-mobile">
         <div class="lang-pill">🇬🇧 English</div>
         <img src="/images/logo2.png" alt="Velnora Finance" class="topbar-mobile-logo">
         <div class="avatar"><%= user.full_name ? user.full_name[0] : 'U' %></div>
       </div>
+      <div class="brand-mark">Welcome Back</div>
+
+      <div class="balance-carousel">
+        <div class="balance-track" id="balanceTrack">
+    
 
       <div class="balance-carousel">
         <div class="balance-track" id="balanceTrack">

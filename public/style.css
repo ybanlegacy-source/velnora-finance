@@ -474,8 +474,9 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
     max-width: 640px;
   }
 
-  /* Bottom mobile nav is redundant with the top nav on larger screens */
-  .bottom-nav { display: none; }
+ .actions-panel { padding-bottom: 32px; }
+
+  .bottom-nav { max-width: 1200px; }
 }
 
 @media (min-width: 1300px) {
@@ -1228,21 +1229,18 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   margin: 0;
 }
 
-/* ================= DASHBOARD MOBILE HEADER ================= */
-/* On mobile, the dashboard shows a single row (language / logo / avatar)
-   instead of the full top-nav menu — matches the phone-native reference. */
-.topbar-mobile-only { display: none; }
+/* ================= DASHBOARD HEADER ================= */
+/* The dashboard has no top-nav menu anymore — just a single header row
+   (language / logo / avatar) at every screen size, plus the bottom icon
+   bar for navigation. */
+.topbar-row-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.topbar-mobile-logo { height: 32px; width: auto; }
 
-@media (max-width: 640px) {
-  .top-nav-hide-mobile { display: none !important; }
-
-  .topbar-desktop-only { display: none !important; }
-
-  .topbar-mobile-only {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-  }
-  .topbar-mobile-logo { height: 32px; width: auto; }
+@media (min-width: 900px) {
+  .topbar-mobile-logo { height: 40px; }
 }
