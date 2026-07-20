@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(express.static(__dirname + '/public'));
 
 app.use(session({
@@ -148,18 +148,35 @@ app.post('/contact', (req, res) => {
 
 // ---------- request loan ----------
 app.get('/request-loan', requireLogin, (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
   const loans = db.prepare('SELECT * FROM loan_requests WHERE user_id = ? ORDER BY created_at DESC')
     .all(req.session.userId);
-  res.render('request-loan', { loans, fmtMoney, sent: false });
+  res.render('request-loan', { user, loans, fmtMoney, sent: false });
 });
 
 app.post('/request-loan', requireLogin, (req, res) => {
-  const { amount, term, purpose } = req.body;
-  db.prepare('INSERT INTO loan_requests (user_id, amount, term, purpose) VALUES (?, ?, ?, ?)')
-    .run(req.session.userId, parseFloat(amount) || 0, term, purpose);
+  const {
+    full_name, date_of_birth, account_last4, employment_status, income_range,
+    phone_number, country, state, city, signature,
+    amount, loan_type, term, purpose
+  } = req.body;
+
+  db.prepare(`
+    INSERT INTO loan_requests (
+      user_id, full_name, date_of_birth, account_last4, employment_status, income_range,
+      phone_number, country, state, city, signature,
+      amount, loan_type, term, purpose
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    req.session.userId, full_name, date_of_birth, account_last4, employment_status, income_range,
+    phone_number, country, state, city, signature,
+    parseFloat(amount) || 0, loan_type, term, purpose
+  );
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
   const loans = db.prepare('SELECT * FROM loan_requests WHERE user_id = ? ORDER BY created_at DESC')
     .all(req.session.userId);
-  res.render('request-loan', { loans, fmtMoney, sent: true });
+  res.render('request-loan', { user, loans, fmtMoney, sent: true });
 });
 
 // ---------- settings ----------

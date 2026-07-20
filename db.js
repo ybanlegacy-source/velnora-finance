@@ -87,6 +87,17 @@ tryAlter(`ALTER TABLE users ADD COLUMN savings_balance REAL NOT NULL DEFAULT 0`)
 tryAlter(`ALTER TABLE users ADD COLUMN savings_account_number TEXT`);
 tryAlter(`ALTER TABLE balance_log ADD COLUMN field TEXT NOT NULL DEFAULT 'balance'`);
 tryAlter(`ALTER TABLE blog_posts ADD COLUMN image TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN full_name TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN date_of_birth TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN account_last4 TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN employment_status TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN income_range TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN phone_number TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN country TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN state TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN city TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN signature TEXT`);
+tryAlter(`ALTER TABLE loan_requests ADD COLUMN loan_type TEXT`);
 
 function seedUsers() {
   const existing = db.prepare('SELECT COUNT(*) AS c FROM users').get();
