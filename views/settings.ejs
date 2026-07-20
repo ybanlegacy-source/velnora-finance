@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings — Demo Bank</title>
+  <title>Settings — Velnora Finance</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div class="banner">Demo project — settings only affect this local demo account</div>
-  <%- include('partials/navbar', { active: 'settings' }) %>
+  <%- include('partials/app-header') %>
 
   <div class="page-wrap">
     <div class="card">
@@ -37,5 +37,7 @@
       </form>
     </div>
   </div>
+
+  <%- include('partials/bottom-nav') %>
 </body>
 </html>

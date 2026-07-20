@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notifications — Demo Bank</title>
+  <title>Notifications — Velnora Finance</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div class="banner">Demo project — notifications are generated from your account activity</div>
-  <%- include('partials/navbar', { active: 'notifications' }) %>
+  <%- include('partials/app-header') %>
 
   <div class="page-wrap">
     <div class="card">
@@ -29,5 +29,7 @@
       <% } %>
     </div>
   </div>
+
+  <%- include('partials/bottom-nav') %>
 </body>
 </html>

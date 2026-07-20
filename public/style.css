@@ -399,7 +399,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 .top-nav-logout button:hover { background: rgba(255,255,255,0.22); }
 
 /* ---------- GENERIC CONTENT PAGES (About, Contact, Loan, Settings, Notifications) ---------- */
-.page-wrap { max-width: 720px; margin: 0 auto; padding: 28px 20px 80px; }
+.page-wrap { max-width: 720px; margin: 0 auto; padding: 28px 20px 100px; }
 .page-title { color: var(--teal-dark); font-size: 1.5rem; margin-top: 0; margin-bottom: 14px; }
 .section-title { color: var(--teal-dark); font-size: 1.05rem; margin-bottom: 10px; }
 .page-wrap .card p { line-height: 1.6; color: #33454b; }
@@ -1333,3 +1333,34 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .signature-pad { height: 160px; }
   .loan-page-header h1 { font-size: 1.4rem; }
 }
+
+/* ================= APP HEADER (back button + centered logo) ================= */
+/* Used on all logged-in pages except the dashboard itself, replacing the
+   old top-nav menu. Navigation now happens via the bottom nav bar instead. */
+.app-header {
+  background: var(--teal-dark);
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  position: relative;
+  min-height: 56px;
+}
+.app-back-btn {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  z-index: 2;
+  line-height: 1;
+}
+.app-header-logo {
+  height: 38px;
+  width: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Bottom nav needs to stay visible (and clickable) above page content on
+   every logged-in page now, not just the dashboard. */
+.bottom-nav { z-index: 10; }

@@ -8,12 +8,12 @@
 </head>
 <body>
   <div class="banner">Demo project — no real loan is issued, this only logs a request for the admin</div>
-  <%- include('partials/navbar', { active: 'loan' }) %>
+  <%- include('partials/app-header') %>
 
   <div class="loan-page-wrap">
     <div class="loan-page-header">
       <h1>Request a Loan</h1>
-      <p>Fill in the details below. This submits a request the admin can review — it does not disburse any real funds.</p>
+      <p> Complete the form below to submit your loan request. Our team will review your application and notify you of the decision as quickly as possible. Please ensure all information provided is accurate to help expedite the review process.  </p>
     </div>
 
     <% if (typeof sent !== 'undefined' && sent) { %>
@@ -177,6 +177,8 @@
       <% } %>
     </div>
   </div>
+
+  <%- include('partials/bottom-nav') %>
 
   <script>
     (function () {

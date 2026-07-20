@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us — Demo Bank</title>
+  <title>Contact Us — Velnora Finance</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div class="banner">Demo project — messages sent here are stored locally only</div>
   <% if (loggedIn) { %>
-    <%- include('partials/navbar', { active: 'contact' }) %>
+    <%- include('partials/app-header') %>
   <% } else { %>
     <%- include('partials/public-nav') %>
   <% } %>
@@ -30,5 +30,9 @@
       </form>
     </div>
   </div>
+
+  <% if (loggedIn) { %>
+    <%- include('partials/bottom-nav') %>
+  <% } %>
 </body>
 </html>

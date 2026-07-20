@@ -117,17 +117,7 @@
       <% } %>
     </div>
 
-    <div class="bottom-nav">
-      <a href="/settings" class="nav-item"><span class="nav-icon">⚙</span>Settings</a>
-      <a href="/notifications" class="nav-item"><span class="nav-icon">✉</span>Notifications</a>
-      <a href="/dashboard" class="nav-item"><span class="nav-icon">⌂</span>Home</a>
-      <a href="/contact" class="nav-item"><span class="nav-icon">💬</span>Support</a>
-      <form method="POST" action="/logout" style="margin:0;">
-        <button type="submit" class="nav-item" style="background:none;border:none;">
-          <span class="nav-icon">⇥</span>Log out
-        </button>
-      </form>
-    </div>
+   <%- include('partials/bottom-nav') %>
   </div>
 
   <!-- Modal for demo transfer/withdrawal requests -->
