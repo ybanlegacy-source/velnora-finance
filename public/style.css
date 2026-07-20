@@ -167,12 +167,13 @@ body {
 }
 .balance-track::-webkit-scrollbar { display: none; }
 
-.carousel-dots {
+ .carousel-dots {
   display: flex;
   justify-content: center;
   gap: 7px;
   margin-top: 12px;
 }
+
 .dot {
   width: 8px;
   height: 8px;
@@ -200,7 +201,7 @@ body {
   color: white;
   display: inline-block;
   padding: 0;
-  font-size: clamp(1.3rem, 8vw, 2rem);
+  font-size: clamp(1.1rem, 6.5vw, 1.6rem);
   font-weight: 700;
   margin-bottom: 18px;
   word-break: break-word;
