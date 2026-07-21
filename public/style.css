@@ -317,13 +317,15 @@ body {
   font-size: 0.9rem;
 }
 .modal-actions { display: flex; gap: 10px; }
-.modal-actions button {
+.modal-actions button,
+.modal-actions a {
   flex: 1;
   padding: 11px;
   border-radius: 8px;
   border: none;
   font-weight: 600;
   cursor: pointer;
+  text-align: center;
 }
 .btn-primary { background: var(--teal-dark); color: white; }
 .btn-cancel { background: #eceff1; color: #444; }

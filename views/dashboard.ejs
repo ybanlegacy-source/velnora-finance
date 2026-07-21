@@ -85,10 +85,11 @@
       <hr class="divider">
 
       <div class="action-grid">
-        <button class="action-item" onclick="openModal('withdrawal','Withdrawal request')">
+             <button class="action-item" onclick="openWithdrawModal()">
           <div class="action-icon">฿</div>
           <div class="action-label">Withdraw</div>
         </button>
+         
         <a href="/request-loan" class="action-item" style="text-decoration:none; color:inherit;">
           <div class="action-icon">▤</div>
           <div class="action-label">Request loan</div>
@@ -115,7 +116,7 @@
           <% }) %>
         </table>
       <% } %>
-    </div>
+      </div>
 
    <%- include('partials/bottom-nav') %>
   </div>
@@ -133,23 +134,48 @@
           <button type="submit" class="btn-primary">Submit</button>
         </div>
       </form>
-      <p style="font-size:0.72rem; color:#8a97a0; margin-top:10px; margin-bottom:0;">
+      
+     <p style="font-size:0.72rem; color:#8a97a0; margin-top:10px; margin-bottom:0;">
         This is a demo form. No real transfer occurs — it just logs a request for class purposes.
       </p>
     </div>
   </div>
 
- <script>
+  <!-- Withdrawal popup -->
+  <div class="modal-overlay" id="withdrawModalOverlay" onclick="if(event.target===this) closeWithdrawModal()">
+    <div class="modal-box">
+      <h3>Action Required</h3>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
+        For your security, withdrawals from your account are temporarily unavailable until the required verification checks have been completed.
+      </p>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
+        Please contact our support team for assistance.
+      </p>
+      <div class="modal-actions">
+        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
+        <a href="https://wa.me/19412824158" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
     function openModal(type, label) {
       document.getElementById('modalType').value = type;
       document.getElementById('modalTitle').innerText = label;
       document.getElementById('modalOverlay').classList.add('open');
     }
-    function closeModal() {
+   function closeModal() {
       document.getElementById('modalOverlay').classList.remove('open');
     }
 
-    // ---- Balance card carousel (swipe on mobile, click dots on desktop) ----
+    function openWithdrawModal() {
+      document.getElementById('withdrawModalOverlay').classList.add('open');
+    }
+    function closeWithdrawModal() {
+      document.getElementById('withdrawModalOverlay').classList.remove('open');
+    }
+
+    // ---- Balance card carousel (swipe on mobile, click dots/arrows on desktop) ----
     (function () {
       const track = document.getElementById('balanceTrack');
       const dots = document.querySelectorAll('#carouselDots .dot');
