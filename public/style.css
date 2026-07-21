@@ -1366,3 +1366,51 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 /* Bottom nav needs to stay visible (and clickable) above page content on
    every logged-in page now, not just the dashboard. */
 .bottom-nav { z-index: 10; }
+
+/* ================= ADMIN PANEL MOBILE RESPONSIVE ================= */
+/* On mobile, turn each table row into a stacked card instead of
+   squeezing columns sideways off-screen. */
+@media (max-width: 700px) {
+  .admin-wrap { padding: 20px 14px; }
+  .admin-header h1 { font-size: 1.1rem; }
+
+  .admin-table thead { display: none; }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td {
+    display: block;
+    width: 100%;
+  }
+  .admin-table tr {
+    margin-bottom: 18px;
+    border: 1px solid #eef0f1;
+    border-radius: 10px;
+    padding: 14px;
+    box-sizing: border-box;
+  }
+  .admin-table td {
+    padding: 8px 0;
+    border: none;
+    text-align: left;
+  }
+  .admin-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #8a97a0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .edit-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .edit-form select,
+  .edit-form input,
+  .edit-form button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
