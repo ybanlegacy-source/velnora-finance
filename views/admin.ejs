@@ -25,11 +25,12 @@
       <h3 style="margin-top:0; color:#0b4a5c;">Users &amp; balances</h3>
       <table class="admin-table">
         <thead>
-          <tr>
+        <tr>
             <th>User</th>
             <th>Account</th>
             <th>Checking balance</th>
             <th>Savings balance</th>
+            <th>Verification</th>
             <th>Set new balance</th>
             <th>Log</th>
           </tr>
@@ -41,6 +42,20 @@
               <td data-label="Account"><%= u.account_number %><br><span style="color:#8a97a0;"><%= u.savings_account_number %></span></td>
               <td data-label="Checking balance"><%= fmtMoney(u.balance) %></td>
               <td data-label="Savings balance"><%= fmtMoney(u.savings_balance || 0) %></td>
+              <td data-label="Verification">
+                <% if (u.kyc_status === 'approved') { %>
+                  <span class="pill-badge pill-approved">Approved</span>
+                <% } else if (u.kyc_status === 'pending') { %>
+                  <span class="pill-badge pill-pending">Pending</span>
+                <% } else if (u.kyc_status === 'rejected') { %>
+                  <span class="pill-badge pill-rejected">Rejected</span>
+                <% } else { %>
+                  <span class="pill-badge pill-none">Not submitted</span>
+                <% } %>
+                <% if (u.kyc_status !== 'not_submitted') { %>
+                  <br><a class="link-quiet" href="/admin/kyc/<%= u.id %>">Review</a>
+                <% } %>
+              </td>
               <td data-label="Set new balance">
                 <form class="edit-form" method="POST" action="/admin/set-balance">
                   <input type="hidden" name="userId" value="<%= u.id %>">

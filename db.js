@@ -67,7 +67,7 @@ db.exec(`
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
 
-  CREATE TABLE IF NOT EXISTS blog_posts (
+CREATE TABLE IF NOT EXISTS blog_posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     slug TEXT UNIQUE NOT NULL,
     title TEXT NOT NULL,
@@ -76,6 +76,21 @@ db.exec(`
     excerpt TEXT NOT NULL,
     content TEXT NOT NULL,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS kyc_submissions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    id_type TEXT NOT NULL,
+    id_front TEXT NOT NULL,
+    id_back TEXT,
+    selfie TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    admin_note TEXT,
+    submitted_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TEXT,
+    reviewed_by TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
   );
 `);
 
@@ -98,6 +113,7 @@ tryAlter(`ALTER TABLE loan_requests ADD COLUMN state TEXT`);
 tryAlter(`ALTER TABLE loan_requests ADD COLUMN city TEXT`);
 tryAlter(`ALTER TABLE loan_requests ADD COLUMN signature TEXT`);
 tryAlter(`ALTER TABLE loan_requests ADD COLUMN loan_type TEXT`);
+tryAlter(`ALTER TABLE users ADD COLUMN kyc_status TEXT NOT NULL DEFAULT 'not_submitted'`);
 
 function seedUsers() {
   const existing = db.prepare('SELECT COUNT(*) AS c FROM users').get();

@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
-app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 app.use(express.static(__dirname + '/public'));
 
 app.use(session({
@@ -179,6 +179,37 @@ app.post('/request-loan', requireLogin, (req, res) => {
   res.render('request-loan', { user, loans, fmtMoney, sent: true });
 });
 
+// ---------- KYC verification ----------
+app.get('/kyc', requireLogin, (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+  const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
+    .all(req.session.userId)[0] || null;
+  res.render('kyc', { user, submission, sent: false });
+});
+
+app.post('/kyc', requireLogin, (req, res) => {
+  const { id_type, id_front, id_back, selfie } = req.body;
+
+  if (!id_type || !id_front || !selfie) {
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+    const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
+      .all(req.session.userId)[0] || null;
+    return res.render('kyc', { user, submission, sent: false, error: 'Please provide the ID type, front photo, and selfie before submitting.' });
+  }
+
+  db.prepare(`
+    INSERT INTO kyc_submissions (user_id, id_type, id_front, id_back, selfie, status)
+    VALUES (?, ?, ?, ?, ?, 'pending')
+  `).run(req.session.userId, id_type, id_front, id_back || null, selfie);
+
+  db.prepare(`UPDATE users SET kyc_status = 'pending' WHERE id = ?`).run(req.session.userId);
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+  const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
+    .all(req.session.userId)[0] || null;
+  res.render('kyc', { user, submission, sent: true });
+});
+
 // ---------- settings ----------
 app.get('/settings', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
@@ -228,7 +259,17 @@ app.get('/notifications', requireLogin, (req, res) => {
       date: l.created_at
     }));
 
-  const items = [...balanceEvents, ...requestEvents, ...loanEvents]
+  const kycEvents = db.prepare(`SELECT * FROM kyc_submissions WHERE user_id = ? AND reviewed_at IS NOT NULL ORDER BY reviewed_at DESC`)
+    .all(req.session.userId)
+    .map(k => ({
+      icon: k.status === 'approved' ? '✅' : '⚠️',
+      text: k.status === 'approved'
+        ? 'Your identity verification was approved.'
+        : `Your identity verification was rejected${k.admin_note ? ' — ' + k.admin_note : ''}.`,
+      date: k.reviewed_at
+    }));
+
+  const items = [...balanceEvents, ...requestEvents, ...loanEvents, ...kycEvents]
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   res.render('notifications', { items });
@@ -267,6 +308,34 @@ app.post('/admin/set-balance', requireAdmin, (req, res) => {
   `).run(userId, admin.username, field, oldBalance, nb, reason || '');
 
   res.redirect('/admin?msg=' + (field === 'savings_balance' ? 'Savings balance' : 'Balance') + ' updated for ' + user.username);
+});
+
+// ---------- admin: review KYC submissions ----------
+app.get('/admin/kyc/:userId', requireAdmin, (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.userId);
+  const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
+    .all(req.params.userId)[0] || null;
+  res.render('admin-kyc', { user, submission });
+});
+
+app.post('/admin/kyc/:userId/approve', requireAdmin, (req, res) => {
+  const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
+  db.prepare(`
+    UPDATE kyc_submissions SET status = 'approved', reviewed_at = CURRENT_TIMESTAMP, reviewed_by = ?, admin_note = ?
+    WHERE user_id = ? AND status = 'pending'
+  `).run(admin.username, req.body.note || null, req.params.userId);
+  db.prepare(`UPDATE users SET kyc_status = 'approved' WHERE id = ?`).run(req.params.userId);
+  res.redirect('/admin?msg=Verification approved');
+});
+
+app.post('/admin/kyc/:userId/reject', requireAdmin, (req, res) => {
+  const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
+  db.prepare(`
+    UPDATE kyc_submissions SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP, reviewed_by = ?, admin_note = ?
+    WHERE user_id = ? AND status = 'pending'
+  `).run(admin.username, req.body.note || null, req.params.userId);
+  db.prepare(`UPDATE users SET kyc_status = 'rejected' WHERE id = ?`).run(req.params.userId);
+  res.redirect('/admin?msg=Verification rejected');
 });
 
 app.get('/admin/log/:userId', requireAdmin, (req, res) => {

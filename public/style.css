@@ -1413,4 +1413,86 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
     width: 100%;
     box-sizing: border-box;
   }
+} 
+
+/* ================= KYC VERIFICATION PAGE ================= */
+.kyc-page-wrap { max-width: 820px; margin: 0 auto; padding: 32px 20px 100px; }
+.kyc-page-header h1 { color: var(--teal-dark); font-size: 1.6rem; margin: 0 0 10px; }
+.kyc-page-header p { color: #556; line-height: 1.6; margin: 0 0 24px; }
+
+.kyc-status-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 22px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+.kyc-status-icon { font-size: 2rem; line-height: 1; }
+.kyc-status-card h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.kyc-status-card p { margin: 0; color: #33454b; line-height: 1.6; }
+.kyc-status-approved { background: #e6f4ea; }
+.kyc-status-approved h2 { color: #1e7d32; }
+.kyc-status-pending { background: #fff8e6; }
+.kyc-status-pending h2 { color: #8a6d00; }
+.kyc-status-rejected { background: #fdecea; }
+.kyc-status-rejected h2 { color: #c0392b; }
+
+.kyc-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.kyc-upload-field { display: flex; flex-direction: column; }
+.kyc-upload-field label { font-size: 0.78rem; font-weight: 700; color: #667; margin-bottom: 8px; }
+.kyc-upload-field input[type="file"] { font-size: 0.82rem; }
+.kyc-preview {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d8dee0;
+  max-height: 160px;
+  object-fit: cover;
+}
+.kyc-hint { font-size: 0.82rem; color: #8a97a0; margin: 12px 0 18px; }
+
+@media (max-width: 700px) {
+  .kyc-upload-grid { grid-template-columns: 1fr; }
+}
+
+/* ================= KYC ADMIN REVIEW ================= */
+.pill-approved { background: #e6f4ea; color: #1e7d32; }
+.pill-pending { background: #fff8e6; color: #8a6d00; }
+.pill-rejected { background: #fdecea; color: #c0392b; }
+.pill-none { background: #eceff1; color: #667; }
+
+.kyc-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+.kyc-review-label { font-size: 0.78rem; font-weight: 700; color: #667; margin: 0 0 8px; }
+.kyc-review-image {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #d8dee0;
+  display: block;
+}
+
+.kyc-decision-forms {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.kyc-decision-form { display: flex; flex-direction: column; gap: 10px; }
+.kyc-decision-form input {
+  padding: 10px 12px;
+  border: 1px solid #d8dee0;
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 640px) {
+  .kyc-decision-forms { grid-template-columns: 1fr; }
 }

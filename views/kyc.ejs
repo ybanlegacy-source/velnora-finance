@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identity Verification — Velnora Finance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — uploaded photos are stored locally for this class project only</div>
+  <%- include('partials/app-header') %>
+
+  <div class="kyc-page-wrap">
+    <div class="kyc-page-header">
+      <h1>Identity Verification (KYC)</h1>
+      <p>Confirm your identity by submitting a clear photo of your ID and a selfie. This helps keep your account secure.</p>
+    </div>
+
+    <% if (submission && submission.status === 'approved') { %>
+      <div class="kyc-status-card kyc-status-approved">
+        <div class="kyc-status-icon">✅</div>
+        <div>
+          <h2>You're verified</h2>
+          <p>Your identity was approved on <%= new Date(submission.reviewed_at).toLocaleDateString() %>. No further action is needed.</p>
+        </div>
+      </div>
+
+    <% } else if (submission && submission.status === 'pending') { %>
+      <div class="kyc-status-card kyc-status-pending">
+        <div class="kyc-status-icon">⏳</div>
+        <div>
+          <h2>Verification pending</h2>
+          <p>Your documents were submitted on <%= new Date(submission.submitted_at).toLocaleDateString() %> and are awaiting admin review. You'll be notified once it's processed.</p>
+        </div>
+      </div>
+
+    <% } else { %>
+
+      <% if (submission && submission.status === 'rejected') { %>
+        <div class="kyc-status-card kyc-status-rejected">
+          <div class="kyc-status-icon">⚠️</div>
+          <div>
+            <h2>Verification not approved</h2>
+            <p>Your previous submission was rejected<% if (submission.admin_note) { %>: <strong><%= submission.admin_note %></strong><% } %>. Please review the details below and submit again.</p>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="error-msg"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/kyc" id="kycForm" class="loan-section-card">
+        <div class="form-field" style="margin-bottom:18px;">
+          <label>ID Type</label>
+          <select name="id_type" required>
+            <option value="">Select...</option>
+            <option>National ID</option>
+            <option>Passport</option>
+            <option>Driving License</option>
+          </select>
+        </div>
+
+        <div class="kyc-upload-grid">
+          <div class="kyc-upload-field">
+            <label>ID Front Photo</label>
+            <input type="file" accept="image/*" capture="environment" id="idFrontFile">
+            <img id="idFrontPreview" class="kyc-preview" style="display:none;">
+            <input type="hidden" name="id_front" id="idFrontInput">
+          </div>
+
+          <div class="kyc-upload-field">
+            <label>ID Back Photo (if applicable)</label>
+            <input type="file" accept="image/*" capture="environment" id="idBackFile">
+            <img id="idBackPreview" class="kyc-preview" style="display:none;">
+            <input type="hidden" name="id_back" id="idBackInput">
+          </div>
+
+          <div class="kyc-upload-field">
+            <label>Selfie</label>
+            <input type="file" accept="image/*" capture="user" id="selfieFile">
+            <img id="selfiePreview" class="kyc-preview" style="display:none;">
+            <input type="hidden" name="selfie" id="selfieInput">
+          </div>
+        </div>
+
+        <p class="kyc-hint">Make sure all text on your ID is clearly visible and not blurry, and your selfie shows your full face in good lighting.</p>
+
+        <button type="submit" class="btn-hero-primary loan-submit-btn">Submit for Verification</button>
+      </form>
+
+    <% } %>
+  </div>
+
+  <%- include('partials/bottom-nav') %>
+
+  <script>
+    function wireUpload(fileInputId, previewId, hiddenInputId) {
+      var fileInput = document.getElementById(fileInputId);
+      var preview = document.getElementById(previewId);
+      var hidden = document.getElementById(hiddenInputId);
+      if (!fileInput) return;
+
+      fileInput.addEventListener('change', function () {
+        var file = fileInput.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          hidden.value = e.target.result;
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    wireUpload('idFrontFile', 'idFrontPreview', 'idFrontInput');
+    wireUpload('idBackFile', 'idBackPreview', 'idBackInput');
+    wireUpload('selfieFile', 'selfiePreview', 'selfieInput');
+
+    var kycForm = document.getElementById('kycForm');
+    if (kycForm) {
+      kycForm.addEventListener('submit', function (e) {
+        var front = document.getElementById('idFrontInput').value;
+        var selfie = document.getElementById('selfieInput').value;
+        if (!front || !selfie) {
+          e.preventDefault();
+          alert('Please upload at least your ID front photo and a selfie before submitting.');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
