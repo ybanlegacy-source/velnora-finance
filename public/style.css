@@ -1496,3 +1496,70 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 @media (max-width: 640px) {
   .kyc-decision-forms { grid-template-columns: 1fr; }
 }
+
+/* ================= USD/EUR TREND CHART ================= */
+.trend-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.trend-header h3 { margin: 0; color: var(--teal-dark); font-size: 1rem; }
+.trend-subtitle { margin: 2px 0 0; color: #8a97a0; font-size: 0.78rem; }
+
+.trend-range-buttons { display: flex; gap: 4px; flex-wrap: wrap; }
+.trend-range-btn {
+  background: #f3f5f6;
+  border: none;
+  color: #556;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.trend-range-btn:hover { background: #e5e8ea; }
+.trend-range-btn.active { background: var(--teal-dark); color: white; }
+
+.trend-current-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--teal-dark);
+  margin-bottom: 10px;
+}
+
+.trend-canvas {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.trend-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #8a97a0;
+  margin-top: 6px;
+}
+
+.trend-source-note {
+  font-size: 0.68rem;
+  color: #b0bac0;
+  margin: 10px 0 0;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .trend-card { padding: 16px; }
+  .trend-canvas { height: 180px; }
+  .trend-range-btn { padding: 4px 8px; font-size: 0.7rem; }
+}

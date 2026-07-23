@@ -34,7 +34,7 @@ function requireAdmin(req, res, next) {
   next();
 }
 function fmtMoney(n) {
-  return '€' + Number(n).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function randomAccountNumber() {
   return '****' + Math.floor(1000 + Math.random() * 9000);

@@ -63,7 +63,31 @@
           <span class="dot active" data-index="0"></span>
           <span class="dot" data-index="1"></span>
         </div>
+     </div>
+    </div>
+
+    <div class="trend-card">
+      <div class="trend-header">
+        <div>
+          <h3>US Dollar Trend</h3>
+          <p class="trend-subtitle">USD → EUR exchange rate</p>
+        </div>
+        <div class="trend-range-buttons" id="trendRangeButtons">
+          <button type="button" class="trend-range-btn" data-range="1W">1W</button>
+          <button type="button" class="trend-range-btn active" data-range="1M">1M</button>
+          <button type="button" class="trend-range-btn" data-range="3M">3M</button>
+          <button type="button" class="trend-range-btn" data-range="6M">6M</button>
+          <button type="button" class="trend-range-btn" data-range="1Y">1Y</button>
+          <button type="button" class="trend-range-btn" data-range="ALL">ALL</button>
+        </div>
       </div>
+      <div class="trend-current-value" id="trendCurrentValue">Loading...</div>
+      <canvas id="trendChart" class="trend-canvas"></canvas>
+      <div class="trend-footer">
+        <span id="trendStartLabel"></span>
+        <span id="trendEndLabel"></span>
+      </div>
+      <p class="trend-source-note">Live exchange rate data from the European Central Bank via Frankfurter.app</p>
     </div>
 
     <div class="actions-panel">
@@ -127,7 +151,7 @@
       <h3 id="modalTitle">Request</h3>
       <form method="POST" action="/request">
         <input type="hidden" name="type" id="modalType">
-        <input type="number" step="0.01" name="amount" placeholder="Amount (€)" required>
+        <input type="number" step="0.01" name="amount" placeholder="Amount ($)" required>
         <textarea name="note" placeholder="Note (optional)" rows="3"></textarea>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -197,10 +221,200 @@
         });
       });
 
-      window.addEventListener('resize', () => {
+     window.addEventListener('resize', () => {
         const activeIndex = [...dots].findIndex(d => d.classList.contains('active'));
         track.scrollTo({ left: activeIndex * track.clientWidth, behavior: 'auto' });
       });
+    })();
+
+    // ---- USD/EUR trend chart (live data from Frankfurter API) ----
+    (function () {
+      const canvas = document.getElementById('trendChart');
+      const buttons = document.querySelectorAll('.trend-range-btn');
+      const currentValueEl = document.getElementById('trendCurrentValue');
+      const startLabelEl = document.getElementById('trendStartLabel');
+      const endLabelEl = document.getElementById('trendEndLabel');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function formatDate(d) {
+        return d.toISOString().slice(0, 10);
+      }
+
+      function getRangeDates(range) {
+        const end = new Date();
+        const start = new Date();
+        switch (range) {
+          case '1W': start.setDate(start.getDate() - 7); break;
+          case '1M': start.setMonth(start.getMonth() - 1); break;
+          case '3M': start.setMonth(start.getMonth() - 3); break;
+          case '6M': start.setMonth(start.getMonth() - 6); break;
+          case '1Y': start.setFullYear(start.getFullYear() - 1); break;
+          case 'ALL': start.setFullYear(start.getFullYear() - 5); break;
+          default: start.setMonth(start.getMonth() - 1);
+        }
+        return { start: formatDate(start), end: formatDate(end) };
+      }
+
+      function drawChart(points) {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const w = rect.width;
+        const h = rect.height;
+        ctx.clearRect(0, 0, w, h);
+
+        if (points.length < 2) {
+          ctx.fillStyle = '#8a97a0';
+          ctx.font = '13px sans-serif';
+          ctx.fillText('Not enough data to display chart.', 16, h / 2);
+          return;
+        }
+
+        const padding = { top: 16, right: 12, bottom: 8, left: 46 };
+        const values = points.map(p => p.value);
+        const minV = Math.min(...values);
+        const maxV = Math.max(...values);
+        const valRange = (maxV - minV) || 1;
+        const padV = valRange * 0.12;
+        const yMin = minV - padV;
+        const yMax = maxV + padV;
+
+        const chartW = w - padding.left - padding.right;
+        const chartH = h - padding.top - padding.bottom;
+
+        function xFor(i) { return padding.left + (i / (points.length - 1)) * chartW; }
+        function yFor(v) { return padding.top + (1 - (v - yMin) / (yMax - yMin)) * chartH; }
+
+        const trendUp = points[points.length - 1].value >= points[0].value;
+        const lineColor = trendUp ? '#16a34a' : '#dc2626';
+        const fillColorTop = trendUp ? 'rgba(22,163,74,0.22)' : 'rgba(220,38,38,0.22)';
+        const fillColorBottom = trendUp ? 'rgba(22,163,74,0)' : 'rgba(220,38,38,0)';
+
+        ctx.strokeStyle = '#eef0f1';
+        ctx.fillStyle = '#8a97a0';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        const gridLines = 3;
+        for (let g = 0; g <= gridLines; g++) {
+          const v = yMin + (yMax - yMin) * (g / gridLines);
+          const y = yFor(v);
+          ctx.beginPath();
+          ctx.moveTo(padding.left, y);
+          ctx.lineTo(w - padding.right, y);
+          ctx.stroke();
+          ctx.fillText(v.toFixed(4), padding.left - 8, y);
+        }
+
+        const gradient = ctx.createLinearGradient(0, padding.top, 0, h - padding.bottom);
+        gradient.addColorStop(0, fillColorTop);
+        gradient.addColorStop(1, fillColorBottom);
+
+        ctx.beginPath();
+        points.forEach((p, i) => {
+          const x = xFor(i);
+          const y = yFor(p.value);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.lineTo(xFor(points.length - 1), h - padding.bottom);
+        ctx.lineTo(xFor(0), h - padding.bottom);
+        ctx.closePath();
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        ctx.beginPath();
+        points.forEach((p, i) => {
+          const x = xFor(i);
+          const y = yFor(p.value);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        const lastX = xFor(points.length - 1);
+        const lastY = yFor(points[points.length - 1].value);
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = lineColor;
+        ctx.fill();
+      }
+
+      function setLoading() {
+        currentValueEl.textContent = 'Loading chart...';
+        currentValueEl.style.color = '#8a97a0';
+        startLabelEl.textContent = '';
+        endLabelEl.textContent = '';
+        const rect = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+      }
+
+      function setError() {
+        currentValueEl.textContent = 'Unable to load live exchange rate data right now.';
+        currentValueEl.style.color = '#c0392b';
+      }
+
+      function loadRange(range) {
+        setLoading();
+        const { start, end } = getRangeDates(range);
+        const url = 'https://api.frankfurter.dev/v1/' + start + '..' + end + '?base=USD&symbols=EUR';
+
+        fetch(url)
+          .then(res => {
+            if (!res.ok) throw new Error('Request failed');
+            return res.json();
+          })
+          .then(data => {
+            const rates = data.rates || {};
+            const points = Object.keys(rates)
+              .sort()
+              .map(date => ({ date, value: rates[date].EUR }));
+
+            if (points.length === 0) {
+              setError();
+              return;
+            }
+
+            const last = points[points.length - 1];
+            const first = points[0];
+            const changePct = ((last.value - first.value) / first.value) * 100;
+            const trendUp = last.value >= first.value;
+
+            currentValueEl.innerHTML =
+              '1 USD = ' + last.value.toFixed(4) + ' EUR ' +
+              '<span style="color:' + (trendUp ? '#16a34a' : '#dc2626') + '; font-size:0.85rem; font-weight:700;">' +
+              (trendUp ? '▲' : '▼') + ' ' + Math.abs(changePct).toFixed(2) + '%</span>';
+            currentValueEl.style.color = '#0b4a5c';
+
+            startLabelEl.textContent = first.date;
+            endLabelEl.textContent = last.date;
+
+            drawChart(points);
+          })
+          .catch(() => setError());
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadRange(btn.dataset.range);
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        clearTimeout(window.__trendResizeTimer);
+        window.__trendResizeTimer = setTimeout(() => {
+          const activeBtn = document.querySelector('.trend-range-btn.active');
+          if (activeBtn) loadRange(activeBtn.dataset.range);
+        }, 300);
+      });
+
+      loadRange('1M');
     })();
   </script>
 </body>
