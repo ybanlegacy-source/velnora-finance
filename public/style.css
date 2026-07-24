@@ -1575,7 +1575,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 .cards-hero h1 { font-size: 1.6rem; font-weight: 800; margin: 0 0 24px; }
 
 .card-visual {
-  background: linear-gradient(135deg,#3469d4, #3b3d3d);
+  background: linear-gradient(135deg,#3469d4, #ffffff);
   border-radius: 18px;
   padding: 24px;
   max-width: 360px;
@@ -1595,7 +1595,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
 .card-valid-thru { font-size: 0.65rem; opacity: 0.7; line-height: 1.4; }
 .card-brand { font-size: 1.1rem; font-weight: 800; font-style: italic; }
-.card-brand-logo { height: 22px; width: auto; display: block; }
+.card-brand-logo { height: 45px; width: auto; display: block; }
 .btn-create-card {
   width: 100%;
   background: rgba(255,255,255,0.15);
