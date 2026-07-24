@@ -1563,3 +1563,97 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .trend-canvas { height: 180px; }
   .trend-range-btn { padding: 4px 8px; font-size: 0.7rem; }
 }
+
+/* ================= CARDS PAGE ================= */
+.cards-page-wrap { max-width: 720px; margin: 0 auto; padding: 0 0 100px; }
+
+.cards-hero {
+  background: linear-gradient(160deg, var(--teal-light), var(--teal-dark));
+  padding: 32px 24px 60px;
+  color: white;
+}
+.cards-hero h1 { font-size: 1.6rem; font-weight: 800; margin: 0 0 24px; }
+
+.card-visual {
+  background: linear-gradient(135deg, #2f92a8, #0b4a5c);
+  border-radius: 18px;
+  padding: 24px;
+  max-width: 360px;
+  margin: 0 auto;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  position: relative;
+}
+.card-chip-icon { font-size: 1.4rem; margin-bottom: 30px; opacity: 0.9; }
+.card-number-placeholder {
+  font-size: 1.25rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  margin-bottom: 18px;
+  opacity: 0.85;
+}
+.card-name-placeholder { font-size: 0.85rem; opacity: 0.7; margin-bottom: 20px; }
+.card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+.card-valid-thru { font-size: 0.65rem; opacity: 0.7; line-height: 1.4; }
+.card-brand { font-size: 1.1rem; font-weight: 800; font-style: italic; }
+.btn-create-card {
+  width: 100%;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.btn-create-card:hover { background: rgba(255,255,255,0.25); }
+
+.card-balance-section {
+  background: white;
+  margin: -32px 20px 0;
+  border-radius: 16px;
+  padding: 22px 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 2;
+}
+.balance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eef0f1;
+  color: #556;
+  font-size: 0.9rem;
+}
+.balance-row:last-child { border-bottom: none; }
+.main-balance-row { font-weight: 800; color: var(--text-dark); font-size: 1rem; }
+.balance-value { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); }
+.balance-value-small { font-weight: 700; color: var(--text-dark); }
+
+.self-service-section { padding: 28px 20px 20px; }
+.self-service-section h2 { color: var(--teal-dark); font-size: 1.05rem; margin: 0 0 14px; }
+
+.self-service-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #eef0f1;
+  padding: 16px 4px;
+  cursor: pointer;
+  text-align: left;
+}
+.ss-icon { font-size: 1.4rem; flex-shrink: 0; }
+.ss-text { flex: 1; }
+.ss-title { font-weight: 700; color: var(--text-dark); font-size: 0.92rem; }
+.ss-subtitle { color: #8a97a0; font-size: 0.8rem; margin-top: 2px; }
+.ss-chevron { color: #b0bac0; font-size: 1.3rem; }
+
+@media (max-width: 640px) {
+  .cards-hero { padding: 24px 16px 50px; }
+  .card-balance-section { margin: -28px 14px 0; }
+  .self-service-section { padding: 24px 14px 16px; }
+}

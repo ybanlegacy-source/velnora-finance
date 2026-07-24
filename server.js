@@ -210,6 +210,11 @@ app.post('/kyc', requireLogin, (req, res) => {
   res.render('kyc', { user, submission, sent: true });
 });
 
+// ---------- cards ----------
+app.get('/cards', requireLogin, (req, res) => {
+  res.render('cards');
+});
+
 // ---------- settings ----------
 app.get('/settings', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);

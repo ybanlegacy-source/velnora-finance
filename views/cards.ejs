@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cards — Velnora Finance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — card issuance is not available, this page is for display purposes only</div>
+  <%- include('partials/app-header') %>
+
+  <div class="cards-page-wrap">
+    <div class="cards-hero">
+      <h1>Cards</h1>
+
+      <div class="card-visual">
+        <div class="card-chip-icon">▤</div>
+        <div class="card-number-placeholder">•••• •••• •••• ••••</div>
+        <div class="card-name-placeholder">No card yet</div>
+        <div class="card-bottom-row">
+          <div class="card-valid-thru">VALID THRU<br>--/--</div>
+          <div class="card-brand">VISA</div>
+        </div>
+        <button type="button" class="btn-create-card" onclick="openCardSupportModal()">+ Create Card</button>
+      </div>
+    </div>
+
+    <div class="card-balance-section">
+      <div class="balance-row main-balance-row">
+        <span>Current card balance</span>
+        <span class="balance-value">$0.00</span>
+      </div>
+      <div class="balance-row">
+        <span>Available</span>
+        <span class="balance-value-small">$0.00</span>
+      </div>
+      <div class="balance-row">
+        <span>Credit limit</span>
+        <span class="balance-value-small">$0.00</span>
+      </div>
+    </div>
+
+    <div class="self-service-section">
+      <h2>Self Service</h2>
+
+      <button type="button" class="self-service-item" onclick="openCardSupportModal()">
+        <div class="ss-icon">🔒</div>
+        <div class="ss-text">
+          <div class="ss-title">Lock Card</div>
+          <div class="ss-subtitle">Temporarily disable your card</div>
+        </div>
+        <div class="ss-chevron">›</div>
+      </button>
+
+      <button type="button" class="self-service-item" onclick="openCardSupportModal()">
+        <div class="ss-icon">🧾</div>
+        <div class="ss-text">
+          <div class="ss-title">Pay Bills</div>
+          <div class="ss-subtitle">Pay your bills with your card</div>
+        </div>
+        <div class="ss-chevron">›</div>
+      </button>
+
+      <button type="button" class="self-service-item" onclick="openCardSupportModal()">
+        <div class="ss-icon">🛒</div>
+        <div class="ss-text">
+          <div class="ss-title">Shop Online</div>
+          <div class="ss-subtitle">Use your card for online purchases</div>
+        </div>
+        <div class="ss-chevron">›</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card support popup -->
+  <div class="modal-overlay" id="cardSupportModalOverlay" onclick="if(event.target===this) closeCardSupportModal()">
+    <div class="modal-box">
+      <h3>Action Required</h3>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
+        Card services are temporarily unavailable until your account has been fully set up by our team.
+      </p>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
+        Please contact our support team to request a Velnora card or manage an existing one.
+      </p>
+      <div class="modal-actions">
+        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
+        <a href="https://wa.me/19412824158" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/bottom-nav') %>
+
+  <script>
+    function openCardSupportModal() {
+      document.getElementById('cardSupportModalOverlay').classList.add('open');
+    }
+    function closeCardSupportModal() {
+      document.getElementById('cardSupportModalOverlay').classList.remove('open');
+    }
+  </script>
+</body>
+</html>
