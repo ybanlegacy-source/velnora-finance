@@ -1575,7 +1575,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 .cards-hero h1 { font-size: 1.6rem; font-weight: 800; margin: 0 0 24px; }
 
 .card-visual {
-  background: linear-gradient(135deg,#3469d4, #1df0ff);
+  background: linear-gradient(135deg,#3469d4, #3b3d3d);
   border-radius: 18px;
   padding: 24px;
   max-width: 360px;
