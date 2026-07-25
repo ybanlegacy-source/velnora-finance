@@ -215,6 +215,51 @@ app.get('/cards', requireLogin, (req, res) => {
   res.render('cards');
 });
 
+// ---------- investments ----------
+app.get('/investments', requireLogin, (req, res) => {
+  res.render('investments');
+});
+
+// Live market index quotes, fetched server-side (avoids browser CORS issues).
+// Falls back to realistic placeholder values per-index if the live source
+// is unavailable, so the page never breaks.
+app.get('/api/market-snapshot', requireLogin, async (req, res) => {
+  const symbols = [
+    { symbol: '^spx', label: 'S&P 500', fallback: { value: 5321.41, changePct: 0.82 } },
+    { symbol: '^ndq', label: 'NASDAQ', fallback: { value: 16780.61, changePct: 1.24 } },
+    { symbol: '^ftm', label: 'FTSE 100', fallback: { value: 8275.63, changePct: 0.43 } },
+    { symbol: '^stoxx50e', label: 'EURO STOXX 50', fallback: { value: 4987.20, changePct: 0.51 } }
+  ];
+
+  const symbolQuery = symbols.map(s => s.symbol).join(',');
+  const url = `https://stooq.com/q/l/?s=${encodeURIComponent(symbolQuery)}&f=sd2t2ohlcv&h&e=csv`;
+
+  let results;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Market data request failed');
+    const text = await response.text();
+    const dataLines = text.trim().split('\n').slice(1); // skip header row
+
+    results = symbols.map((s, i) => {
+      const row = dataLines[i];
+      if (!row) return { label: s.label, value: s.fallback.value, changePct: s.fallback.changePct, live: false };
+      const cols = row.split(',');
+      const open = parseFloat(cols[3]);
+      const close = parseFloat(cols[6]);
+      if (!close || isNaN(close)) {
+        return { label: s.label, value: s.fallback.value, changePct: s.fallback.changePct, live: false };
+      }
+      const changePct = open ? ((close - open) / open) * 100 : 0;
+      return { label: s.label, value: close, changePct, live: true };
+    });
+  } catch (err) {
+    results = symbols.map(s => ({ label: s.label, value: s.fallback.value, changePct: s.fallback.changePct, live: false }));
+  }
+
+  res.json({ indices: results });
+});
+
 // ---------- settings ----------
 app.get('/settings', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);

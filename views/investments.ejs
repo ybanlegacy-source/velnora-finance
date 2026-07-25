@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investments — Velnora Finance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — investment features are illustrative only, no real trades are placed</div>
+  <%- include('partials/app-header') %>
+
+  <div class="inv-page-wrap">
+    <div class="inv-page-header">
+      <h1>Investments</h1>
+      <p>Grow your wealth with professionally managed portfolios.</p>
+    </div>
+
+    <div class="inv-hero">
+      <div class="inv-hero-top">
+        <div>
+          <div class="inv-hero-label">Portfolio Value</div>
+          <div class="inv-hero-value" id="portfolioValue">$0.00</div>
+          <div class="inv-hero-change" id="portfolioChange"></div>
+          <div class="inv-hero-today" id="portfolioToday"></div>
+          <button type="button" class="inv-view-performance" onclick="openInvestModal()">View Performance ›</button>
+        </div>
+        <span class="inv-month-badge">This Month</span>
+      </div>
+      <canvas id="portfolioChart" class="inv-hero-chart"></canvas>
+    </div>
+
+    <div class="inv-quick-actions">
+      <button type="button" class="inv-quick-item" onclick="openInvestModal()">
+        <div class="inv-quick-icon">＋</div>
+        <div>Invest</div>
+      </button>
+      <button type="button" class="inv-quick-item" onclick="openInvestModal()">
+        <div class="inv-quick-icon">◔</div>
+        <div>Portfolio</div>
+      </button>
+      <button type="button" class="inv-quick-item" onclick="openInvestModal()">
+        <div class="inv-quick-icon">▤</div>
+        <div>History</div>
+      </button>
+    </div>
+
+    <h2 class="inv-section-title">Investment Opportunities</h2>
+    <div class="inv-opportunities-grid">
+      <div class="inv-opp-card">
+        <div class="inv-opp-icon inv-opp-icon-green">🛡️</div>
+        <h3>Conservative Income</h3>
+        <div class="inv-opp-label">Expected Return</div>
+        <div class="inv-opp-return inv-return-green">4 – 6% yearly</div>
+        <div class="inv-opp-risk inv-risk-green">Low Risk</div>
+        <div class="inv-opp-label">Minimum</div>
+        <div class="inv-opp-min">$500</div>
+        <button type="button" class="inv-invest-btn inv-btn-green" onclick="openInvestModal()">Invest</button>
+      </div>
+
+      <div class="inv-opp-card">
+        <div class="inv-opp-icon inv-opp-icon-blue">⚖️</div>
+        <h3>Balanced Growth</h3>
+        <div class="inv-opp-label">Expected Return</div>
+        <div class="inv-opp-return inv-return-blue">7 – 10% yearly</div>
+        <div class="inv-opp-risk inv-risk-blue">Medium Risk</div>
+        <div class="inv-opp-label">Minimum</div>
+        <div class="inv-opp-min">$1,000</div>
+        <button type="button" class="inv-invest-btn inv-btn-blue" onclick="openInvestModal()">Invest</button>
+      </div>
+
+      <div class="inv-opp-card">
+        <div class="inv-opp-icon inv-opp-icon-purple">🚀</div>
+        <h3>Growth Portfolio</h3>
+        <div class="inv-opp-label">Expected Return</div>
+        <div class="inv-opp-return inv-return-purple">10 – 15% yearly</div>
+        <div class="inv-opp-risk inv-risk-purple">Higher Risk</div>
+        <div class="inv-opp-label">Minimum</div>
+        <div class="inv-opp-min">$2,500</div>
+        <button type="button" class="inv-invest-btn inv-btn-purple" onclick="openInvestModal()">Invest</button>
+      </div>
+    </div>
+
+    <h2 class="inv-section-title">Market Snapshot</h2>
+    <div class="inv-market-grid" id="marketSnapshotGrid">
+      <div class="inv-market-card"><div class="inv-market-label">Loading…</div></div>
+      <div class="inv-market-card"><div class="inv-market-label">Loading…</div></div>
+      <div class="inv-market-card"><div class="inv-market-label">Loading…</div></div>
+      <div class="inv-market-card"><div class="inv-market-label">Loading…</div></div>
+    </div>
+
+    <div class="inv-bottom-grid">
+      <div class="inv-allocation-card">
+        <h2 class="inv-section-title" style="margin-top:0;">Asset Allocation</h2>
+        <div class="inv-allocation-body">
+          <canvas id="allocationChart" class="inv-allocation-chart"></canvas>
+          <div class="inv-allocation-legend">
+            <div class="inv-legend-item"><span class="inv-dot" style="background:#3b5bdb;"></span>Stocks <strong>60%</strong></div>
+            <div class="inv-legend-item"><span class="inv-dot" style="background:#2f9e44;"></span>Bonds <strong>20%</strong></div>
+            <div class="inv-legend-item"><span class="inv-dot" style="background:#f08c00;"></span>Cash <strong>15%</strong></div>
+            <div class="inv-legend-item"><span class="inv-dot" style="background:#9c36b5;"></span>Real Estate <strong>5%</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inv-activity-card">
+        <div class="inv-activity-header">
+          <h2 class="inv-section-title" style="margin:0;">Recent Activity</h2>
+        </div>
+        <div class="inv-activity-item">
+          <div class="inv-activity-icon inv-activity-icon-green">↗</div>
+          <div class="inv-activity-text">
+            <div class="inv-activity-title">Purchased Balanced Portfolio</div>
+            <div class="inv-activity-date">Yesterday</div>
+          </div>
+          <div class="inv-activity-amount inv-amount-green">$1,000.00</div>
+        </div>
+        <div class="inv-activity-item">
+          <div class="inv-activity-icon inv-activity-icon-blue">$</div>
+          <div class="inv-activity-text">
+            <div class="inv-activity-title">Dividend Received</div>
+            <div class="inv-activity-date">May 21, 2026</div>
+          </div>
+          <div class="inv-activity-amount inv-amount-green">$48.20</div>
+        </div>
+        <div class="inv-activity-item">
+          <div class="inv-activity-icon inv-activity-icon-orange">%</div>
+          <div class="inv-activity-text">
+            <div class="inv-activity-title">Interest Earned</div>
+            <div class="inv-activity-date">May 20, 2026</div>
+          </div>
+          <div class="inv-activity-amount inv-amount-green">$12.80</div>
+        </div>
+        <button type="button" class="inv-view-all-link" onclick="openInvestModal()">View all activity ›</button>
+      </div>
+    </div>
+
+    <div class="inv-insights-bar">
+      <div class="inv-insight-item"><span class="inv-insight-icon">🛡️</span>Diversification reduces investment risk.</div>
+      <div class="inv-insight-item"><span class="inv-insight-icon">📊</span>Monthly investing helps smooth market volatility.</div>
+      <div class="inv-insight-item"><span class="inv-insight-icon">⭐</span>Your portfolio is currently <strong>Moderate Risk</strong>.</div>
+    </div>
+
+    <button type="button" class="inv-start-btn" onclick="openInvestModal()">+ Start New Investment</button>
+  </div>
+
+  <!-- Investment support popup -->
+  <div class="modal-overlay" id="investModalOverlay" onclick="if(event.target===this) closeInvestModal()">
+    <div class="modal-box">
+      <h3>Action Required</h3>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
+        Investment services are temporarily unavailable until your account has been fully set up by our team.
+      </p>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
+        Please contact our support team to start investing.
+      </p>
+      <div class="modal-actions">
+        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
+        <a href="https://wa.me/19412824158" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+      </div>
+    </div>
+</div>
+
+  <%- include('partials/bottom-nav') %>
+
+  <script>
+    function openInvestModal() {
+      document.getElementById('investModalOverlay').classList.add('open');
+    }
+    function closeInvestModal() {
+      document.getElementById('investModalOverlay').classList.remove('open');
+    }
+
+    // ---- Portfolio value chart (demo smooth trend) ----
+    (function () {
+      const canvas = document.getElementById('portfolioChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const endValue = 24580.36;
+      const points = [];
+      let v = endValue * 0.82;
+      for (let i = 0; i <= 30; i++) {
+        const progress = i / 30;
+        const noise = (Math.sin(i * 1.7) + Math.sin(i * 0.6)) * endValue * 0.01;
+        v = endValue * 0.82 + (endValue - endValue * 0.82) * progress + noise;
+        points.push(v);
+      }
+      points[points.length - 1] = endValue;
+
+      document.getElementById('portfolioValue').textContent = '$' + endValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const change = endValue - points[0];
+      const changePct = (change / points[0]) * 100;
+      document.getElementById('portfolioChange').innerHTML =
+        '<span style="color:#8ef0b0;">+$' + change.toFixed(2) + ' (+' + changePct.toFixed(2) + '%) ↗</span>';
+      document.getElementById('portfolioToday').textContent =
+        'Today +$' + (endValue * 0.0034).toFixed(2) + ' (+0.34%)';
+
+      function draw() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const w = rect.width, h = rect.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const minV = Math.min(...points), maxV = Math.max(...points);
+        const pad = (maxV - minV) * 0.15 || 1;
+        const yMin = minV - pad, yMax = maxV + pad;
+
+        function xFor(i) { return (i / (points.length - 1)) * w; }
+        function yFor(v) { return h - ((v - yMin) / (yMax - yMin)) * h; }
+
+        ctx.beginPath();
+        points.forEach((p, i) => {
+          const x = xFor(i), y = yFor(p);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+      }
+      draw();
+      window.addEventListener('resize', draw);
+    })();
+
+    // ---- Asset allocation donut chart ----
+    (function () {
+      const canvas = document.getElementById('allocationChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const data = [
+        { value: 60, color: '#3b5bdb' },
+        { value: 20, color: '#2f9e44' },
+        { value: 15, color: '#f08c00' },
+        { value: 5, color: '#9c36b5' }
+      ];
+      const cx = rect.width / 2, cy = rect.height / 2;
+      const outerR = Math.min(cx, cy) - 4;
+      const innerR = outerR * 0.62;
+      let startAngle = -Math.PI / 2;
+
+      data.forEach(seg => {
+        const angle = (seg.value / 100) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, outerR, startAngle, startAngle + angle);
+        ctx.arc(cx, cy, innerR, startAngle + angle, startAngle, true);
+        ctx.closePath();
+        ctx.fillStyle = seg.color;
+        ctx.fill();
+        startAngle += angle;
+      });
+    })();
+
+    // ---- Live market snapshot ----
+    (function () {
+      const grid = document.getElementById('marketSnapshotGrid');
+      if (!grid) return;
+
+      fetch('/api/market-snapshot')
+        .then(res => res.json())
+        .then(data => {
+          grid.innerHTML = '';
+          data.indices.forEach(idx => {
+            const up = idx.changePct >= 0;
+            const card = document.createElement('div');
+            card.className = 'inv-market-card';
+            card.innerHTML =
+              '<div class="inv-market-label">' + idx.label + '</div>' +
+              '<div class="inv-market-value">' + idx.value.toLocaleString('en-US', { maximumFractionDigits: 2 }) + '</div>' +
+              '<div class="inv-market-change" style="color:' + (up ? '#2f9e44' : '#e03131') + ';">' +
+              (up ? '+' : '') + idx.changePct.toFixed(2) + '%</div>';
+            grid.appendChild(card);
+          });
+        })
+        .catch(() => {
+          grid.innerHTML = '<div class="inv-market-card"><div class="inv-market-label">Market data unavailable</div></div>';
+        });
+    })();
+  </script>
+</body>
+</html>
