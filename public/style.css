@@ -1741,7 +1741,7 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
 .inv-market-change { font-size: 0.82rem; font-weight: 700; margin-top: 2px; }
 
 @media (max-width: 700px) {
-  .inv-opportunities-grid { grid-template-columns: 1fr; }
+  .inv-opportunities-grid { grid-template-columns: repeat(2, 1fr); }
   .inv-market-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .inv-bottom-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; margin-top: 24px; }
