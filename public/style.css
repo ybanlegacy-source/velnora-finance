@@ -275,8 +275,8 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--bg);
-  border-top: 1px solid #d5dade;
+  background: var(--teal-dark);
+  border-top: 1px solid var(--teal-dark);
   display: flex;
   justify-content: space-around;
   padding: 10px 0 14px;
@@ -284,7 +284,7 @@ body {
 .nav-item {
   text-align: center;
   font-size: 0.68rem;
-  color: var(--teal-dark);
+  color: white;
   font-weight: 600;
 }
 .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
@@ -1792,3 +1792,233 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   .inv-bottom-grid { grid-template-columns: 1fr; }
   .inv-insights-bar { grid-template-columns: 1fr; }
 }
+
+/* ================= ABOUT US HERO ================= */
+.about-hero {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.about-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+.about-hero-overlay {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.92);
+  max-width: 420px;
+  margin-left: 6%;
+  padding: 36px 32px;
+  border-radius: 4px;
+}
+.about-hero-overlay h1 {
+  color: var(--text-dark);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+.about-hero-overlay p {
+  color: #33454b;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .about-hero { min-height: 280px; }
+  .about-hero-overlay {
+    margin-left: 4%;
+    margin-right: 4%;
+    max-width: none;
+    padding: 24px 20px;
+  }
+  .about-hero-overlay h1 { font-size: 1.5rem; }
+}
+
+/* ================= ABOUT US INTRO SECTION ================= */
+.about-intro { background: white; padding: 60px 24px; }
+.about-intro-inner { max-width: 780px; margin: 0 auto; text-align: center; }
+.about-intro-inner h2 {
+  color: var(--text-dark);
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 24px;
+}
+.about-intro-inner p {
+  color: #33454b;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .about-intro { padding: 40px 20px; }
+  .about-intro-inner h2 { font-size: 1.4rem; }
+  .about-intro-inner p { font-size: 0.92rem; }
+}
+
+/* ================= ABOUT US HISTORY SECTION ================= */
+.about-history { background: #f3f5f6; padding: 60px 24px; }
+.about-history-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.about-history-image { flex: 1 1 45%; }
+.about-history-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.about-history-text { flex: 1 1 45%; }
+.about-history-tag {
+  color: var(--teal-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.about-history-text h2 {
+  color: var(--text-dark);
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+.about-history-text p {
+  color: #33454b;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .about-history-inner { flex-direction: column; }
+  .about-history { padding: 40px 20px; }
+  .about-history-text h2 { font-size: 1.4rem; }
+}
+
+
+/* ================= ABOUT US LEADERSHIP SECTION ================= */
+.about-leadership { background: #ffffff; padding: 60px 24px; }
+.about-leadership-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.about-leadership-image { flex: 1 1 45%; }
+.about-leadership-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.about-leadership-text { flex: 1 1 45%; }
+.about-leadership-tag {
+  color: var(--teal-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.about-leadership-text h2 {
+  color: var(--text-dark);
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+.about-leadership-text p {
+  color: #33454b;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .about-leadership-inner { flex-direction: column; }
+  .about-leadership { padding: 40px 20px; }
+  .about-leadership-text h2 { font-size: 1.4rem; }
+}
+
+/* ================= ABOUT US COMMITMENT SECTION ================= */
+.about-commitment { background: #f3f5f6; padding: 60px 24px; }
+.about-commitment-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.about-commitment-image { flex: 1 1 45%; }
+.about-commitment-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.about-commitment-text { flex: 1 1 45%; }
+.about-commitment-tag {
+  color: var(--teal-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.about-commitment-text h2 {
+  color: var(--text-dark);
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+.about-commitment-text p {
+  color: #33454b;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .about-commitment-inner {
+    flex-direction: column;
+  }
+  .about-commitment-image {
+    order: 1;
+  }
+  .about-commitment-text {
+    order: 2;
+  }
+  .about-commitment {
+    padding: 40px 20px;
+  }
+  .about-commitment-text h2 {
+    font-size: 1.4rem;
+  }
+}
+
+.about-commitment-image {
+  order: 2;
+}
+.about-commitment-text {
+  order: 1;
+}
+
+

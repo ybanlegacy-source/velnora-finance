@@ -14,9 +14,62 @@
     <%- include('partials/public-nav') %>
   <% } %>
 
+  <section class="about-hero">
+    <img src="/images/about.png" alt="Velnora Finance team" class="about-hero-image">
+    <div class="about-hero-overlay">
+      <h1>About Velnora Finance</h1>
+      <p>Put the expertise of a modern banking dashboard to work as a student project.</p>
+    </div>
+ </section>
+
+  <section class="about-intro">
+    <div class="about-intro-inner">
+      <h2>Banking built around your goals, your future, and your financial success</h2>
+      <p>We believe banking should be simple, secure, and built around the people and businesses we serve. We provide trusted financial solutions designed to help our customers manage their money with confidence, pursue their goals, and plan for the future. From everyday banking to lending and financial services, our focus remains on delivering a dependable experience backed by security, transparency, and exceptional service.</p>
+    </div>
+  </section>
+
+  <section class="about-history">
+    <div class="about-history-inner">
+      <div class="about-history-image">
+        <img src="/images/history.png" alt="Our History">
+      </div>
+      <div class="about-history-text">
+        <div class="about-history-tag">OUR HISTORY</div>
+        <h2>Built on Trust. Designed for What's Next.</h2>
+        <p>Our approach to banking is simple: put our customers first, provide dependable financial solutions, and continuously adapt to the way people manage their money. From everyday banking and payments to lending and financial planning, we combine modern technology with personal service to make banking more secure, accessible, and convenient. As our customers' needs evolve, we remain committed to building lasting relationships and creating financial solutions that help individuals and businesses move forward with confidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-leadership"> 
+    <div class="about-leadership-inner">
+      <div class="about-leadership-image">
+        <img src="/images/leadership.png" alt="Our Leadership">
+      </div>
+      <div class="about-leadership-text">
+        <div class="about-leadership-tag">OUR LEADERSHIP</div>
+        <h2>Experience you can trust</h2>
+        <p>Our leadership team brings together experience, integrity, and a forward-thinking approach to modern banking. Guided by a shared commitment to our customers, we work to build a culture of trust, accountability, and innovation. Together, we focus on making thoughtful decisions, strengthening the communities we serve, and creating a secure and reliable financial experience for every customer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-commitment"> 
+    <div class="about-commitment-inner">
+      <div class="about-commitment-image">
+        <img src="/images/commitment.png" alt="Our commitment">
+      </div>
+      <div class="about-commitment-text">
+        <div class="about-commitment-tag">OUR COMMITMENT</div>
+        <h2>A $500 Million Commitment to Communities</h2>
+        <p>Our mission is to change banking for good by bringing humanity, integrity and simplicity to it. The Velnora Finance Impact Initiative advances socioeconomic mobility by advocating for an inclusive society, building thriving communities and creating financial tools that enrich lives. It is fueled by an initial $200 million multi-year commitment to catalyze economic growth in low- to moderate-income communities—and close gaps in equity and opportunity.</p>
+      </div>
+    </div>
+  </section>
+
   <div class="page-wrap">
     <div class="card">
-      <h1 class="page-title">About Velnora Finance</h1>
       <p>
         Velnora Finance is a fictional banking dashboard built as a student project.
         It exists to demonstrate core web development skills — authentication,
@@ -39,6 +92,29 @@
       </ul>
     </div>
   </div>
+
+<!-- CTA BANNER -->
+  <section class="cta-banner">
+    <h2>Ready to get started?</h2>
+    <p>Create your free account and see your dashboard in under a minute.</p>
+    <a href="/create-account" class="btn-hero-primary">Create Account</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+    <div class="footer-inner">
+      <div class="footer-brand">VELNORA FINANCE</div>
+      <div class="footer-links">
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/contact">Help and Support</a>
+        <a href="/login">Log In</a>
+        <a href="/create-account">Create Account</a>
+      </div>
+      <p class="footer-note">Velnora Finance is a fictional bank created for a school project. No real accounts, deposits, or financial services are provided.</p>
+    </div>
+  </footer>
 
   <% if (loggedIn) { %>
     <%- include('partials/bottom-nav') %>
