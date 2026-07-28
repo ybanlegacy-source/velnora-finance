@@ -1250,10 +1250,10 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
   justify-content: space-between;
   margin-bottom: 18px;
 }
-.topbar-mobile-logo { height: 32px; width: auto; }
+.topbar-mobile-logo { height: 150px; width: auto; }
 
 @media (min-width: 900px) {
-  .topbar-mobile-logo { height: 40px; }
+  .topbar-mobile-logo { height: 100px; }
 }
 
 /* ================= REQUEST LOAN PAGE ================= */
