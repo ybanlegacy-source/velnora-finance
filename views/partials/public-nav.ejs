@@ -7,7 +7,7 @@
       <div class="utility-right">
         <div class="utility-secondary">
           <a href="/contact" class="utility-link">📞 Contact us</a>
-          <button class="utility-search" type="button" aria-label="Search" onclick="alert('Search is not wired up in this demo yet.')">🔍 Search</button>
+          <button class="utility-search" type="button" aria-label="Search" onclick="openSiteSearch()">🔍 Search</button>
           <a href="/login" class="utility-link">Log in</a>
         </div>
         <a href="/create-account" class="btn-create-account">Create Account</a>
@@ -32,6 +32,82 @@
     </div>
   </div>
 </header>
+
+<!-- Site search modal -->
+<div class="search-modal-overlay" id="searchModalOverlay" onclick="if(event.target===this) closeSiteSearch()">
+  <div class="search-modal-box">
+    <div class="search-modal-header">
+      <input type="text" id="searchInput" placeholder="Search Velnora Finance..." autocomplete="off">
+      <button type="button" class="search-close-btn" onclick="closeSiteSearch()" aria-label="Close search">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script>
+  var siteSearchIndex = [
+    { title: 'Home', url: '/', keywords: 'homepage main landing' },
+    { title: 'About Us', url: '/about', keywords: 'about company who we are' },
+    { title: 'Contact Us', url: '/contact', keywords: 'contact support help message' },
+    { title: 'Create Account', url: '/create-account', keywords: 'signup register new account join' },
+    { title: 'Log In', url: '/login', keywords: 'login sign in existing user' },
+    { title: 'Checking Account', url: '/#checking', keywords: 'checking everyday spending' },
+    { title: 'Savings Account', url: '/#savings', keywords: 'savings save money grow' },
+    { title: 'Loans', url: '/#loans', keywords: 'loan borrow lending' },
+    { title: 'Cards', url: '/#cards', keywords: 'card debit credit visa' },
+    { title: 'Report Fraud or Scams', url: '/contact', keywords: 'fraud scam security report suspicious' },
+    { title: '5 Simple Ways to Start Saving This Month', url: '/blog/five-simple-ways-to-start-saving', keywords: 'savings tips blog' },
+    { title: 'Understanding Loan Terms Before You Borrow', url: '/blog/understanding-loan-terms', keywords: 'loan terms blog borrow' },
+    { title: 'How to Spot a Phishing Scam Before It\'s Too Late', url: '/blog/how-to-spot-a-phishing-scam', keywords: 'phishing security scam blog' },
+    { title: 'Budgeting 101: Building a Plan That Actually Works', url: '/blog/budgeting-101', keywords: 'budgeting plan blog' },
+    { title: 'Why a Separate Savings Account Makes a Difference', url: '/blog/why-a-separate-savings-account-matters', keywords: 'savings account blog' },
+    { title: 'Introducing the New Velnora Finance Dashboard', url: '/blog/introducing-the-new-dashboard', keywords: 'dashboard news blog' },
+    { title: 'Velnora Finance Now Supports Savings + Checking Accounts', url: '/blog/now-supporting-checking-and-savings', keywords: 'product update blog' },
+    { title: 'Our Commitment to Keeping Your Account Secure', url: '/blog/our-commitment-to-security', keywords: 'security news blog' }
+  ];
+
+  function openSiteSearch() {
+    document.getElementById('searchModalOverlay').classList.add('open');
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    setTimeout(function () { document.getElementById('searchInput').focus(); }, 50);
+  }
+  function closeSiteSearch() {
+    document.getElementById('searchModalOverlay').classList.remove('open');
+  }
+
+  function renderSearchResults(query) {
+    var resultsEl = document.getElementById('searchResults');
+    if (!query.trim()) { resultsEl.innerHTML = ''; return; }
+
+    var q = query.toLowerCase();
+    var matches = siteSearchIndex.filter(function (item) {
+      return item.title.toLowerCase().indexOf(q) !== -1 || item.keywords.toLowerCase().indexOf(q) !== -1;
+    });
+
+    if (matches.length === 0) {
+      resultsEl.innerHTML = '<div class="search-no-results">No results found. Try a different word.</div>';
+      return;
+    }
+
+    resultsEl.innerHTML = matches.map(function (item) {
+      return '<a href="' + item.url + '" class="search-result-item">' + item.title + '</a>';
+    }).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('searchInput');
+    if (!input) return;
+    input.addEventListener('input', function () { renderSearchResults(input.value); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var first = document.querySelector('.search-result-item');
+        if (first) window.location.href = first.getAttribute('href');
+      }
+      if (e.key === 'Escape') closeSiteSearch();
+    });
+  });
+</script>
 
 <script>
   (function () {

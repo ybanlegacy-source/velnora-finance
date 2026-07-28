@@ -399,3 +399,10 @@ app.listen(PORT, () => {
   console.log('Login as admin: admin / admin123');
   console.log('Login as demo user: demo / demo123');
 });
+
+// ---------- privacy ----------
+app.get('/privacy', (req, res) => {
+    res.render('privacy', {
+        loggedIn: req.session?.user || false
+    });
+});
