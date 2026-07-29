@@ -182,6 +182,28 @@
     </div>
   </div>
 
+  <!-- Blocked account modal -->
+<% if (user.blocked) { %>
+<div class="modal-overlay open" id="blockedModalOverlay">
+  <div class="modal-box">
+    <h3>Account Restricted</h3>
+    <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
+      Your account has been temporarily blocked for the following reason:
+    </p>
+    <p style="color:#c0392b; font-weight:600; line-height:1.5; margin-bottom:20px;">
+      <%= user.block_reason %>
+    </p>
+    <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
+      Please contact our support team to resolve this issue.
+    </p>
+    <div class="modal-actions">
+      <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
+      <a href="https://wa.me/12567436235" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+    </div>
+  </div>
+</div>
+<% } %>
+
   <script>
     function openModal(type, label) {
       document.getElementById('modalType').value = type;

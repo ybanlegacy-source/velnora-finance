@@ -367,6 +367,28 @@ app.post('/admin/set-balance', requireAdmin, (req, res) => {
   res.redirect('/admin?msg=' + (field === 'savings_balance' ? 'Savings balance' : 'Balance') + ' updated for ' + user.username);
 });
 
+// ---------- admin: block / unblock users ----------
+app.post('/admin/block-user', requireAdmin, (req, res) => {
+  const { userId, reason } = req.body;
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+  if (!user) return res.redirect('/admin?msg=User not found');
+
+  db.prepare('UPDATE users SET blocked = 1, block_reason = ? WHERE id = ?')
+    .run(reason && reason.trim() ? reason.trim() : 'Your account has been blocked. Please contact support.', userId);
+
+  res.redirect('/admin?msg=' + user.username + ' has been blocked');
+});
+
+app.post('/admin/unblock-user', requireAdmin, (req, res) => {
+  const { userId } = req.body;
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+  if (!user) return res.redirect('/admin?msg=User not found');
+
+  db.prepare('UPDATE users SET blocked = 0, block_reason = NULL WHERE id = ?').run(userId);
+
+  res.redirect('/admin?msg=' + user.username + ' has been unblocked');
+});
+
 // ---------- admin: review KYC submissions ----------
 app.get('/admin/kyc/:userId', requireAdmin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.userId);

@@ -31,6 +31,7 @@
             <th>Checking balance</th>
             <th>Savings balance</th>
             <th>Verification</th>
+            <th>Block</th>
             <th>Set new balance</th>
             <th>Log</th>
           </tr>
@@ -56,6 +57,26 @@
                   <br><a class="link-quiet" href="/admin/kyc/<%= u.id %>">Review</a>
                 <% } %>
               </td>
+
+
+<td data-label="Block">
+  <% if (u.blocked) { %>
+    <span class="pill-badge pill-rejected">Blocked</span>
+    <div style="color:#8a97a0; font-size:0.75rem; margin:4px 0 8px;"><%= u.block_reason %></div>
+    <form method="POST" action="/admin/unblock-user">
+      <input type="hidden" name="userId" value="<%= u.id %>">
+      <button type="submit">Unblock</button>
+    </form>
+  <% } else { %>
+    <span class="pill-badge pill-approved">Active</span>
+    <form class="edit-form" method="POST" action="/admin/block-user" style="margin-top:6px;">
+      <input type="hidden" name="userId" value="<%= u.id %>">
+      <input type="text" name="reason" placeholder="Reason for block" required>
+      <button type="submit">Block</button>
+    </form>
+  <% } %>
+</td>
+
               <td data-label="Set new balance">
                 <form class="edit-form" method="POST" action="/admin/set-balance">
                   <input type="hidden" name="userId" value="<%= u.id %>">

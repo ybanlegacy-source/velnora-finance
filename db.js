@@ -97,6 +97,8 @@ CREATE TABLE IF NOT EXISTS blog_posts (
 function tryAlter(sql) {
   try { db.exec(sql); } catch (e) { /* column already exists — fine */ }
 }
+tryAlter(`ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0`);
+tryAlter(`ALTER TABLE users ADD COLUMN block_reason TEXT`);
 
 tryAlter(`ALTER TABLE users ADD COLUMN savings_balance REAL NOT NULL DEFAULT 0`);
 tryAlter(`ALTER TABLE users ADD COLUMN savings_account_number TEXT`);
