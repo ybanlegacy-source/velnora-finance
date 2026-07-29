@@ -146,6 +146,13 @@ app.post('/contact', (req, res) => {
   res.render('contact', { sent: true, loggedIn: !!req.session.userId });
 });
 
+// ---------- premier ----------
+app.get("/premier", (req, res) => {
+    res.render("premier", {
+        loggedIn: !!req.session.user
+    });
+});
+
 // ---------- request loan ----------
 app.get('/request-loan', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);

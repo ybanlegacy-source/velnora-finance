@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Velnora Finance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="banner">Demo project — fictional bank for coursework</div>
+  <% if (loggedIn) { %>
+    <%- include('partials/app-header') %>
+  <% } else { %>
+    <%- include('partials/public-nav') %>
+  <% } %>
+
+  <section class="about-hero">
+    <img src="/images/premier.png" alt="Velnora Finance team" class="about-hero-image">
+    <div class="about-hero-overlay">
+      <h1>Enjoy the Benefits of Premier Banking</h1>
+      <p>Experience priority banking, exclusive rewards, and personalized financial solutions with Velnora Premier Banking.</p>
+    </div>
+ </section>
+
+  <section class="premier-intro">
+    <div class="premier-intro-inner">
+      <h2>Join thousands of customers who trust Velnora Finance for secure, premium banking solutions.</h2>
+    </div>
+  </section>
+
+  <!-- PREMIER BENEFITS -->
+<section class="premier-steps">
+
+    <div class="premier-steps-header">
+        <h2>How to Become a Velnora Premier Member</h2>
+
+        <p>
+            Qualifying for Premier Banking is simple. Complete the steps below to
+            unlock exclusive banking benefits, dedicated support, and premium
+            financial solutions.
+        </p>
+    </div>
+
+    <div class="premier-grid">
+
+        <!-- Card 1 -->
+        <div class="premier-card">
+            <div class="step-number">1</div>
+
+            <h3>Open a Premier Account</h3>
+
+            <p>
+                Create your Velnora Premier account online in just a few minutes.
+            </p>
+
+            <a href="/create-account">
+                Open an account →
+            </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="premier-card">
+            <div class="step-number">2</div>
+
+            <h3>Verify Your Identity</h3>
+
+            <p>
+                Complete a secure identity verification to activate your account.
+            </p>
+
+            <a href="/contact">
+                Learn more →
+            </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="premier-card">
+            <div class="step-number">3</div>
+
+            <h3>Meet the Eligibility</h3>
+
+            <p>
+                Maintain the required balance or qualifying relationship to enjoy Premier benefits.
+            </p>
+
+            <a href="/contact">
+                View eligibility →
+            </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="premier-card">
+            <div class="step-number">4</div>
+
+            <h3>Enjoy Premier Banking</h3>
+
+            <p>
+                Access priority support, premium services, exclusive rewards, and more.
+            </p>
+
+            <a href="/contact">
+                Explore benefits →
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+  <section class="premier-history">
+    <div class="premier-history-inner">
+      <div class="premier-history-image">
+        <img src="/images/live.png" alt="Our History">
+      </div>
+      <div class="premier-history-text">
+        <div class="premier-history-tag">ENJOY AN ELITE EXPERIENCE WHEN YOU SWITCH</div>
+        <h2>Live</h2>
+        <p>Enjoy live sport, music and entertainment with Seat Unique, which offers premium seating and hospitality at venues like Wembley Stadium, 02 Arena, mercedez benz stadium.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="premier-leadership"> 
+    <div class="premier-leadership-inner">
+      <div class="premier-leadership-image">
+        <img src="/images/family.png" alt="Our Leadership">
+      </div>
+      <div class="premier-leadership-text">
+        <div class="premier-leadership-tag">QUALITY FAMILY VACATIONS</div>
+        <h2>Family</h2>
+        <p>Choose year round family vacations with four Essential  Annual Passes, available across over 20 world attractions including The Maldives, Monaco...</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="premier-commitment"> 
+    <div class="premier-commitment-inner">
+      <div class="premier-commitment-image">
+        <img src="/images/hotel.png" alt="Our commitment">
+      </div>
+      <div class="premier-commitment-text">
+        <div class="premier-commitment-tag">TOP HOTELS</div>
+        <h2>Stay at the Best Hotels</h2>
+        <p>Experience luxury and comfort at our partner hotels worldwide, offering exceptional service and amenities for an unforgettable stay.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="premier-benefits">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why switch to a Premier Current Account?</h2>
+            <p>
+                Take your banking to the next level and discover a world of Premier
+                benefits and perks.
+            </p>
+        </div>
+        <div class="benefits-grid">
+            <!-- Benefit 1 -->
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-percent"></i>
+                </div>
+                <h3>Exclusive rates</h3>
+                <p>
+                    When you're with Premier, you get exclusive rates on savings,
+                    mortgages and investment opportunities designed to help you
+                    achieve your financial goals.
+                </p>
+            </div>
+            <!-- Benefit 2 -->
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="far fa-star"></i>
+                </div>
+                <h3>Lifestyle rewards</h3>
+                <p>
+                    Enjoy premium lifestyle rewards, early access to exclusive events,
+                    travel offers, entertainment discounts and complimentary streaming
+                    subscriptions.
+                </p>
+            </div>
+            <!-- Benefit 3 -->
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="far fa-compass"></i>
+                </div>
+                <h3>Help when you need it</h3>
+                <p>
+                    Your dedicated financial adviser is available whenever you need
+                    support. You also have access to our customer care team 24 hours
+                    a day, 7 days a week.
+                </p>
+            </div>
+      </div>
+    </div>
+</section>
+
+  <div class="page-wrap">
+    
+  </div>
+
+<!-- CTA BANNER -->
+  <section class="cta-banner">
+    <h2>Ready to get started?</h2>
+    <p>Create your free account and see your dashboard in under a minute.</p>
+    <a href="/create-account" class="btn-hero-primary">Create Account</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+    <div class="footer-inner">
+      <div class="footer-brand">VELNORA FINANCE</div>
+      <div class="footer-links">
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/contact">Help and Support</a>
+        <a href="/login">Log In</a>
+        <a href="/create-account">Create Account</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+      <p class="footer-note">&copy; 2026 Velnora Finance. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <% if (loggedIn) { %>
+    <%- include('partials/bottom-nav') %>
+  <% } %>
+</body>
+</html>
