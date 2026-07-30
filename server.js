@@ -178,21 +178,15 @@ app.get('/request-loan', requireLogin, (req, res) => {
 });
 
 app.post('/request-loan', requireLogin, (req, res) => {
-  const {
-    full_name, date_of_birth, account_last4, employment_status, income_range,
-    phone_number, country, state, city, signature,
-    amount, loan_type, term, purpose
-  } = req.body;
+  const { full_name, employment_status, income_range, amount, loan_type, term, purpose } = req.body;
 
   db.prepare(`
     INSERT INTO loan_requests (
-      user_id, full_name, date_of_birth, account_last4, employment_status, income_range,
-      phone_number, country, state, city, signature,
+      user_id, full_name, employment_status, income_range,
       amount, loan_type, term, purpose
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    req.session.userId, full_name, date_of_birth, account_last4, employment_status, income_range,
-    phone_number, country, state, city, signature,
+    req.session.userId, full_name, employment_status, income_range,
     parseFloat(amount) || 0, loan_type, term, purpose
   );
 

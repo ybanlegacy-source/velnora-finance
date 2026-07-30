@@ -22,7 +22,6 @@
 
     <form method="POST" action="/request-loan" id="loanForm">
 
-      <!-- ============ PERSONAL INFORMATION ============ -->
       <div class="loan-section-card">
         <h2 class="loan-section-title">Personal Information</h2>
 
@@ -30,17 +29,6 @@
           <div class="form-field">
             <label>Full Name</label>
             <input type="text" name="full_name" required value="<%= user.full_name || '' %>">
-          </div>
-
-          <div class="form-field">
-            <label>Date of Birth</label>
-            <input type="date" name="date_of_birth" required>
-          </div>
-
-          <div class="form-field">
-            <label>Account Number (last 4 digits)</label>
-            <input type="text" name="account_last4" maxlength="4" pattern="\d{4}" inputmode="numeric"
-                   value="<%= user.account_number ? user.account_number.replace(/\D/g,'') : '' %>" required>
           </div>
 
           <div class="form-field">
@@ -69,39 +57,10 @@
               <option>$200,000+</option>
             </select>
           </div>
-
-          <div class="form-field">
-            <label>Phone Number</label>
-            <input type="tel" name="phone_number" required>
-          </div>
-
-          <div class="form-field">
-            <label>Country</label>
-            <input type="text" name="country" required>
-          </div>
-
-          <div class="form-field">
-            <label>State</label>
-            <input type="text" name="state" required>
-          </div>
-
-          <div class="form-field">
-            <label>City</label>
-            <input type="text" name="city" required>
-          </div>
-        </div>
-
-        <div class="signature-field">
-          <label>Digital Signature</label>
-          <p class="signature-hint">Sign using your mouse or finger below.</p>
-          <canvas id="signaturePad" class="signature-pad" width="700" height="200"></canvas>
-          <div class="signature-actions">
-            <button type="button" id="clearSignature" class="btn-clear-sig">Clear Signature</button>
-          </div>
-          <input type="hidden" name="signature" id="signatureInput">
         </div>
       </div>
-
+             
+     
       <!-- ============ LOAN DETAILS ============ -->
       <div class="loan-section-card">
         <h2 class="loan-section-title">Loan Details</h2>
@@ -180,65 +139,5 @@
 
   <%- include('partials/bottom-nav') %>
 
-  <script>
-    (function () {
-      var canvas = document.getElementById('signaturePad');
-      var ctx = canvas.getContext('2d');
-      ctx.strokeStyle = '#0b4a5c';
-      ctx.lineWidth = 2.2;
-      ctx.lineCap = 'round';
-
-      var drawing = false;
-      var hasDrawn = false;
-
-      function getPos(e) {
-        var rect = canvas.getBoundingClientRect();
-        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return {
-          x: (clientX - rect.left) * (canvas.width / rect.width),
-          y: (clientY - rect.top) * (canvas.height / rect.height)
-        };
-      }
-
-      function start(e) {
-        drawing = true;
-        hasDrawn = true;
-        var pos = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-        e.preventDefault();
-      }
-      function move(e) {
-        if (!drawing) return;
-        var pos = getPos(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-        e.preventDefault();
-      }
-      function end() { drawing = false; }
-
-      canvas.addEventListener('mousedown', start);
-      canvas.addEventListener('mousemove', move);
-      window.addEventListener('mouseup', end);
-      canvas.addEventListener('touchstart', start, { passive: false });
-      canvas.addEventListener('touchmove', move, { passive: false });
-      canvas.addEventListener('touchend', end);
-
-      document.getElementById('clearSignature').addEventListener('click', function () {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        hasDrawn = false;
-      });
-
-      document.getElementById('loanForm').addEventListener('submit', function (e) {
-        if (!hasDrawn) {
-          e.preventDefault();
-          alert('Please sign in the signature box before submitting your loan request.');
-          return;
-        }
-        document.getElementById('signatureInput').value = canvas.toDataURL('image/png');
-      });
-    })();
-  </script>
 </body>
 </html>
