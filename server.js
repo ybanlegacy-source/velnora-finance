@@ -202,64 +202,40 @@ app.post('/request-loan', requireLogin, (req, res) => {
   res.render('request-loan', { user, loans, fmtMoney, sent: true });
 });
 
-// ---------- Email verification (replaces document-upload KYC) ----------
+// ---------- Account verification (simple CAPTCHA) ----------
+function generateCaptcha(req) {
+  const a = Math.floor(Math.random() * 10) + 1;
+  const b = Math.floor(Math.random() * 10) + 1;
+  req.session.captchaAnswer = a + b;
+  return `${a} + ${b}`;
+}
+
 app.get('/kyc', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-  res.render('kyc', { user, sent: false, error: null });
+  const question = generateCaptcha(req);
+  res.render('kyc', { user, question, error: null });
 });
 
-app.post('/kyc/send-verification', requireLogin, async (req, res) => {
-  const { email } = req.body;
+app.post('/kyc/verify-captcha', requireLogin, (req, res) => {
+  const submitted = parseInt(req.body.captchaAnswer, 10);
+  const correct = req.session.captchaAnswer;
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.render('kyc', { user, sent: false, error: 'Please enter a valid email address.' });
+  if (isNaN(submitted) || submitted !== correct) {
+    const question = generateCaptcha(req);
+    return res.render('kyc', { user, question, error: 'That answer was incorrect. Please try again.' });
   }
 
-  const token = crypto.randomBytes(32).toString('hex');
-  db.prepare('INSERT INTO email_verifications (user_id, email, token) VALUES (?, ?, ?)')
-    .run(req.session.userId, email, token);
+  db.prepare('UPDATE users SET email_verified = 1 WHERE id = ?').run(req.session.userId);
+  delete req.session.captchaAnswer;
 
-  const verifyUrl = `${process.env.SITE_URL}/verify-email/${token}`;
-
-  try {
-    await transporter.sendMail({
-      from: `"Velnora Finance" <${process.env.SMTP_USER}>`,
-      to: email,
-      subject: 'Verify your Velnora Finance account',
-      html: `
-        <p>Hi ${user.full_name || 'there'},</p>
-        <p>Click the link below to verify your account:</p>
-        <p><a href="${verifyUrl}">${verifyUrl}</a></p>
-        <p>If you didn't request this, you can ignore this email.</p>
-      `
-    });
-  } catch (err) {
-    console.error('Email send failed:', err);
-    return res.render('kyc', { user, sent: false, error: 'Could not send verification email: ' + err.message });
-  }
-
-  res.render('kyc', { user, sent: true, error: null });
+  const updatedUser = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+  const question = generateCaptcha(req);
+  res.render('kyc', { user: updatedUser, question, error: null });
 });
 
-app.get('/verify-email/:token', requireLogin, (req, res) => {
-  const record = db.prepare('SELECT * FROM email_verifications WHERE token = ? AND user_id = ?')
-    .get(req.params.token, req.session.userId);
 
-  if (!record) {
-    return res.render('kyc', {
-      user: db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId),
-      sent: false,
-      error: 'This verification link is invalid or has already been used.'
-    });
-  }
 
-  db.prepare('UPDATE email_verifications SET verified_at = CURRENT_TIMESTAMP WHERE id = ?').run(record.id);
-  db.prepare('UPDATE users SET email = ?, email_verified = 1 WHERE id = ?').run(record.email, req.session.userId);
-
-  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-  res.render('kyc', { user, sent: false, error: null, justVerified: true });
-});
 
 // ---------- cards ----------
 app.get('/cards', requireLogin, (req, res) => {
