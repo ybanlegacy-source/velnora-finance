@@ -233,7 +233,7 @@ app.post('/kyc/send-verification', requireLogin, async (req, res) => {
     });
   } catch (err) {
     console.error('Email send failed:', err);
-    return res.render('kyc', { user, sent: false, error: 'Could not send verification email. Please try again.' });
+    return res.render('kyc', { user, sent: false, error: 'Could not send verification email: ' + err.message });
   }
 
   res.render('kyc', { user, sent: true, error: null });
