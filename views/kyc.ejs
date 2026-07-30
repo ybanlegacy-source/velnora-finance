@@ -1,133 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Identity Verification — Velnora Finance</title>
+  <title>Account Verification — Velnora Finance</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="banner">Demo project — uploaded photos are stored locally for this class project only</div>
+  <div class="banner">Demo project — verification emails are for class demonstration purposes only</div>
   <%- include('partials/app-header') %>
 
   <div class="kyc-page-wrap">
     <div class="kyc-page-header">
-      <h1>Identity Verification (KYC)</h1>
-      <p>Confirm your identity by submitting a clear photo of your ID and a selfie. This helps keep your account secure.</p>
+      <h1>Account Verification</h1>
+      <p>Verify your email address to unlock full access to your Velnora Finance account.</p>
     </div>
 
-    <% if (submission && submission.status === 'approved') { %>
+    <% if (user.email_verified) { %>
       <div class="kyc-status-card kyc-status-approved">
         <div class="kyc-status-icon">✅</div>
         <div>
           <h2>You're verified</h2>
-          <p>Your identity was approved on <%= new Date(submission.reviewed_at).toLocaleDateString() %>. No further action is needed.</p>
+          <p>Your account is fully verified<% if (justVerified) { %> — thanks for confirming your email!<% } %></p>
         </div>
       </div>
 
-    <% } else if (submission && submission.status === 'pending') { %>
+    <% } else if (sent) { %>
       <div class="kyc-status-card kyc-status-pending">
-        <div class="kyc-status-icon">⏳</div>
+        <div class="kyc-status-icon">📧</div>
         <div>
-          <h2>Verification pending</h2>
-          <p>Your documents were submitted on <%= new Date(submission.submitted_at).toLocaleDateString() %> and are awaiting admin review. You'll be notified once it's processed.</p>
+          <h2>Check your inbox</h2>
+          <p>We've sent a verification link to your email. Click it to finish verifying your account.</p>
         </div>
       </div>
 
     <% } else { %>
-
-      <% if (submission && submission.status === 'rejected') { %>
-        <div class="kyc-status-card kyc-status-rejected">
-          <div class="kyc-status-icon">⚠️</div>
-          <div>
-            <h2>Verification not approved</h2>
-            <p>Your previous submission was rejected<% if (submission.admin_note) { %>: <strong><%= submission.admin_note %></strong><% } %>. Please review the details below and submit again.</p>
-          </div>
-        </div>
-      <% } %>
-
-      <% if (typeof error !== 'undefined' && error) { %>
+      <% if (error) { %>
         <div class="error-msg"><%= error %></div>
       <% } %>
 
-      <form method="POST" action="/kyc" id="kycForm" class="loan-section-card">
-        <div class="form-field" style="margin-bottom:18px;">
-          <label>ID Type</label>
-          <select name="id_type" required>
-            <option value="">Select...</option>
-            <option>National ID</option>
-            <option>Passport</option>
-            <option>Driving License</option>
-          </select>
-        </div>
-
-        <div class="kyc-upload-grid">
-          <div class="kyc-upload-field">
-            <label>ID Front Photo</label>
-            <input type="file" accept="image/*" capture="environment" id="idFrontFile">
-            <img id="idFrontPreview" class="kyc-preview" style="display:none;">
-            <input type="hidden" name="id_front" id="idFrontInput">
-          </div>
-
-          <div class="kyc-upload-field">
-            <label>ID Back Photo (if applicable)</label>
-            <input type="file" accept="image/*" capture="environment" id="idBackFile">
-            <img id="idBackPreview" class="kyc-preview" style="display:none;">
-            <input type="hidden" name="id_back" id="idBackInput">
-          </div>
-
-          <div class="kyc-upload-field">
-            <label>Selfie</label>
-            <input type="file" accept="image/*" capture="user" id="selfieFile">
-            <img id="selfiePreview" class="kyc-preview" style="display:none;">
-            <input type="hidden" name="selfie" id="selfieInput">
-          </div>
-        </div>
-
-        <p class="kyc-hint">Make sure all text on your ID is clearly visible and not blurry, and your selfie shows your full face in good lighting.</p>
-
-        <button type="submit" class="btn-hero-primary loan-submit-btn">Submit for Verification</button>
-      </form>
-
+      <div class="loan-section-card" style="text-align:center;">
+        <p style="margin-bottom:20px; color:#33454b;">You haven't verified your email yet. Click below to get started.</p>
+        <button type="button" class="btn-hero-primary loan-submit-btn" onclick="openVerifyModal()">Verify My Email</button>
+      </div>
     <% } %>
+  </div>
+
+  <!-- Email verification modal -->
+  <div class="modal-overlay" id="verifyModalOverlay" onclick="if(event.target===this) closeVerifyModal()">
+    <div class="modal-box">
+      <h3>Verify Your Email</h3>
+      <form method="POST" action="/kyc/send-verification">
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeVerifyModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Send Verification Link</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <%- include('partials/bottom-nav') %>
 
   <script>
-    function wireUpload(fileInputId, previewId, hiddenInputId) {
-      var fileInput = document.getElementById(fileInputId);
-      var preview = document.getElementById(previewId);
-      var hidden = document.getElementById(hiddenInputId);
-      if (!fileInput) return;
-
-      fileInput.addEventListener('change', function () {
-        var file = fileInput.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          hidden.value = e.target.result;
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      });
+    function openVerifyModal() {
+      document.getElementById('verifyModalOverlay').classList.add('open');
     }
-
-    wireUpload('idFrontFile', 'idFrontPreview', 'idFrontInput');
-    wireUpload('idBackFile', 'idBackPreview', 'idBackInput');
-    wireUpload('selfieFile', 'selfiePreview', 'selfieInput');
-
-    var kycForm = document.getElementById('kycForm');
-    if (kycForm) {
-      kycForm.addEventListener('submit', function (e) {
-        var front = document.getElementById('idFrontInput').value;
-        var selfie = document.getElementById('selfieInput').value;
-        if (!front || !selfie) {
-          e.preventDefault();
-          alert('Please upload at least your ID front photo and a selfie before submitting.');
-        }
-      });
+    function closeVerifyModal() {
+      document.getElementById('verifyModalOverlay').classList.remove('open');
     }
   </script>
 </body>

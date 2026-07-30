@@ -92,11 +92,40 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     reviewed_by TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
+
+  CREATE TABLE IF NOT EXISTS kyc_submissions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    id_type TEXT NOT NULL,
+    id_front TEXT NOT NULL,
+    id_back TEXT,
+    selfie TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    admin_note TEXT,
+    submitted_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TEXT,
+    reviewed_by TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS email_verifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    email TEXT NOT NULL,
+    token TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    verified_at TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
 `);
 
 function tryAlter(sql) {
   try { db.exec(sql); } catch (e) { /* column already exists — fine */ }
 }
+tryAlter(`ALTER TABLE users ADD COLUMN email TEXT`);
+tryAlter(`ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0`);
+
 tryAlter(`ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0`);
 tryAlter(`ALTER TABLE users ADD COLUMN block_reason TEXT`);
 

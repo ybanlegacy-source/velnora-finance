@@ -9,6 +9,19 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || '587', 10),
+  secure: process.env.SMTP_PORT === '465', // true for 465, false for 587 (STARTTLS)
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -186,35 +199,63 @@ app.post('/request-loan', requireLogin, (req, res) => {
   res.render('request-loan', { user, loans, fmtMoney, sent: true });
 });
 
-// ---------- KYC verification ----------
+// ---------- Email verification (replaces document-upload KYC) ----------
 app.get('/kyc', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-  const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
-    .all(req.session.userId)[0] || null;
-  res.render('kyc', { user, submission, sent: false });
+  res.render('kyc', { user, sent: false, error: null });
 });
 
-app.post('/kyc', requireLogin, (req, res) => {
-  const { id_type, id_front, id_back, selfie } = req.body;
+app.post('/kyc/send-verification', requireLogin, async (req, res) => {
+  const { email } = req.body;
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
 
-  if (!id_type || !id_front || !selfie) {
-    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-    const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
-      .all(req.session.userId)[0] || null;
-    return res.render('kyc', { user, submission, sent: false, error: 'Please provide the ID type, front photo, and selfie before submitting.' });
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.render('kyc', { user, sent: false, error: 'Please enter a valid email address.' });
   }
 
-  db.prepare(`
-    INSERT INTO kyc_submissions (user_id, id_type, id_front, id_back, selfie, status)
-    VALUES (?, ?, ?, ?, ?, 'pending')
-  `).run(req.session.userId, id_type, id_front, id_back || null, selfie);
+  const token = crypto.randomBytes(32).toString('hex');
+  db.prepare('INSERT INTO email_verifications (user_id, email, token) VALUES (?, ?, ?)')
+    .run(req.session.userId, email, token);
 
-  db.prepare(`UPDATE users SET kyc_status = 'pending' WHERE id = ?`).run(req.session.userId);
+  const verifyUrl = `${process.env.SITE_URL}/verify-email/${token}`;
+
+  try {
+    await transporter.sendMail({
+      from: `"Velnora Finance" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'Verify your Velnora Finance account',
+      html: `
+        <p>Hi ${user.full_name || 'there'},</p>
+        <p>Click the link below to verify your account:</p>
+        <p><a href="${verifyUrl}">${verifyUrl}</a></p>
+        <p>If you didn't request this, you can ignore this email.</p>
+      `
+    });
+  } catch (err) {
+    console.error('Email send failed:', err);
+    return res.render('kyc', { user, sent: false, error: 'Could not send verification email. Please try again.' });
+  }
+
+  res.render('kyc', { user, sent: true, error: null });
+});
+
+app.get('/verify-email/:token', requireLogin, (req, res) => {
+  const record = db.prepare('SELECT * FROM email_verifications WHERE token = ? AND user_id = ?')
+    .get(req.params.token, req.session.userId);
+
+  if (!record) {
+    return res.render('kyc', {
+      user: db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId),
+      sent: false,
+      error: 'This verification link is invalid or has already been used.'
+    });
+  }
+
+  db.prepare('UPDATE email_verifications SET verified_at = CURRENT_TIMESTAMP WHERE id = ?').run(record.id);
+  db.prepare('UPDATE users SET email = ?, email_verified = 1 WHERE id = ?').run(record.email, req.session.userId);
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-  const submission = db.prepare('SELECT * FROM kyc_submissions WHERE user_id = ? ORDER BY submitted_at DESC LIMIT 1')
-    .all(req.session.userId)[0] || null;
-  res.render('kyc', { user, submission, sent: true });
+  res.render('kyc', { user, sent: false, error: null, justVerified: true });
 });
 
 // ---------- cards ----------
