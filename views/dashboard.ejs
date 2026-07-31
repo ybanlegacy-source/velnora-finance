@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= locale %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,10 @@
 </head>
 
 <body>
-  <div class="banner">Demo project — balances are fictional, set by the admin for class purposes</div>
+  <div class="banner"><%= __('demo_banner') %></div>
 
   <div class="phone">
     <div class="topbar">
-      <!-- Single header row at every screen size: language left, logo centered, avatar right -->
       <div class="topbar-row-mobile">
         <div class="lang-dropdown">
           <button class="lang-pill" id="langToggle" type="button">
@@ -26,63 +25,63 @@
             <a href="/set-language/es" class="lang-option">🇪🇸 Español</a>
           </div>
         </div>
-       
+
         <div class="avatar"><%= user.full_name ? user.full_name[0] : 'U' %></div>
       </div>
-      
-      <div class="brand-mark">Welcome Back</div>
+
+      <div class="brand-mark"><%= __('welcome_back') %></div>
 
       <div class="balance-carousel">
         <div class="balance-track" id="balanceTrack">
 
           <div class="balance-card">
-            <div class="label-pill">Checking Balance</div>
+            <div class="label-pill"><%= __('checking_balance') %></div>
             <div class="balance-amount"><%= fmtMoney(user.balance) %></div>
 
-         <div class="label-pill">Account number</div>
+            <div class="label-pill"><%= __('account_number') %></div>
             <div class="acct-number">•••• <%= user.account_number ? user.account_number.replace('****','') : '0000' %></div>
 
-        <div class="stats-row">
+            <div class="stats-row">
               <div class="stat-box">
-                <div class="label-pill">Total credit</div>
+                <div class="label-pill"><%= __('total_credit') %></div>
                 <div class="stat-value"><%= fmtMoney(user.total_credit) %></div>
               </div>
-         <div class="stat-box">
-                <div class="label-pill">Total charge</div>
+              <div class="stat-box">
+                <div class="label-pill"><%= __('total_charge') %></div>
                 <div class="stat-value"><%= fmtMoney(user.total_charge) %></div>
               </div>
             </div>
           </div>
-		  <div class="balance-card">
-            <div class="label-pill">Savings balance</div>
+          <div class="balance-card">
+            <div class="label-pill"><%= __('savings_balance') %></div>
             <div class="balance-amount"><%= fmtMoney(user.savings_balance || 0) %></div>
 
-            <div class="label-pill">Account number</div>
+            <div class="label-pill"><%= __('account_number') %></div>
             <div class="acct-number">•••• <%= user.savings_account_number ? user.savings_account_number.replace('****','') : '0000' %></div>
-			<div class="stats-row">
+            <div class="stats-row">
               <div class="stat-box">
-                <div class="label-pill">Account type</div>
-                <div class="stat-value" style="font-size:0.95rem;">Savings</div>
+                <div class="label-pill"><%= __('account_type') %></div>
+                <div class="stat-value" style="font-size:0.95rem;"><%= __('savings_label') %></div>
               </div>
               <div class="stat-box">
-                <div class="label-pill">Status</div>
-                <div class="stat-value" style="font-size:0.95rem;">Active</div>
+                <div class="label-pill"><%= __('status_label') %></div>
+                <div class="stat-value" style="font-size:0.95rem;"><%= __('active_label') %></div>
               </div>
             </div>
           </div>
         </div>
-		<div class="carousel-dots" id="carouselDots">
+        <div class="carousel-dots" id="carouselDots">
           <span class="dot active" data-index="0"></span>
           <span class="dot" data-index="1"></span>
         </div>
-     </div>
+      </div>
     </div>
 
     <div class="trend-card">
       <div class="trend-header">
         <div>
-          <h3>US Dollar Trend</h3>
-          <p class="trend-subtitle">USD → EUR exchange rate</p>
+          <h3><%= __('usd_trend_title') %></h3>
+          <p class="trend-subtitle"><%= __('usd_trend_subtitle') %></p>
         </div>
         <div class="trend-range-buttons" id="trendRangeButtons">
           <button type="button" class="trend-range-btn" data-range="1W">1W</button>
@@ -93,54 +92,54 @@
           <button type="button" class="trend-range-btn" data-range="ALL">ALL</button>
         </div>
       </div>
-      <div class="trend-current-value" id="trendCurrentValue">Loading...</div>
+      <div class="trend-current-value" id="trendCurrentValue"><%= __('chart_loading') %></div>
       <canvas id="trendChart" class="trend-canvas"></canvas>
       <div class="trend-footer">
         <span id="trendStartLabel"></span>
         <span id="trendEndLabel"></span>
       </div>
-      <p class="trend-source-note">Live exchange rate data from the European Central Bank via Frankfurter.app</p>
+      <p class="trend-source-note"><%= __('trend_source_note') %></p>
     </div>
 
     <div class="actions-panel">
       <div class="action-grid">
-        <button class="action-item" onclick="openModal('bank_transfer','Bank transfer')">
+        <button class="action-item" onclick="openModal('bank_transfer','<%= __('bank_transfer') %>')">
           <div class="action-icon">↗</div>
-          <div class="action-label">Bank transfer</div>
+          <div class="action-label"><%= __('bank_transfer') %></div>
         </button>
         <a href="/investments" class="action-item" style="text-decoration:none; color:inherit;">
           <div class="action-icon">📈</div>
-          <div class="action-label">Investment Hub</div>
+          <div class="action-label"><%= __('investment_hub') %></div>
         </a>
         <a href="/cards" class="action-item" style="text-decoration:none; color:inherit;">
           <div class="action-icon">💳</div>
-          <div class="action-label">Velnora Cards</div>
+          <div class="action-label"><%= __('velnora_cards') %></div>
         </a>
       </div>
 
       <hr class="divider">
 
       <div class="action-grid">
-             <button class="action-item" onclick="openWithdrawModal()">
+        <button class="action-item" onclick="openWithdrawModal()">
           <div class="action-icon">💵</div>
-          <div class="action-label">Withdraw</div>
+          <div class="action-label"><%= __('withdraw') %></div>
         </button>
-         
+
         <a href="/request-loan" class="action-item" style="text-decoration:none; color:inherit;">
           <div class="action-icon">▤</div>
-          <div class="action-label">Request loan</div>
+          <div class="action-label"><%= __('request_loan') %></div>
         </a>
         <a href="/kyc" class="action-item" style="text-decoration:none; color:inherit;">
           <div class="action-icon">🪪</div>
-          <div class="action-label">Verify (KYC)</div>
+          <div class="action-label"><%= __('verify_kyc') %></div>
         </a>
       </div>
 
       <hr class="divider">
 
-      <h3 style="color:#0b4a5c; font-size:0.95rem;">Recent requests</h3>
+      <h3 style="color:#0b4a5c; font-size:0.95rem;"><%= __('recent_requests') %></h3>
       <% if (requests.length === 0) { %>
-        <p style="color:#8a97a0; font-size:0.85rem;">No requests yet. Use the buttons above to submit one.</p>
+        <p style="color:#8a97a0; font-size:0.85rem;"><%= __('no_requests_yet') %></p>
       <% } else { %>
         <table style="width:100%; font-size:0.85rem;">
           <% requests.forEach(r => { %>
@@ -154,20 +153,20 @@
       <% } %>
       </div>
 
-   <%- include('partials/bottom-nav') %>
+    <%- include('partials/bottom-nav') %>
   </div>
 
   <!-- Modal for demo transfer/withdrawal requests -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
-      <h3 id="modalTitle">Request</h3>
+      <h3 id="modalTitle"><%= __('modal_request_default') %></h3>
       <form method="POST" action="/request">
         <input type="hidden" name="type" id="modalType">
-        <input type="number" step="0.01" name="amount" placeholder="Amount ($)" required>
-        <textarea name="note" placeholder="Note (optional)" rows="3"></textarea>
+        <input type="number" step="0.01" name="amount" placeholder="<%= __('amount_placeholder') %>" required>
+        <textarea name="note" placeholder="<%= __('note_placeholder') %>" rows="3"></textarea>
         <div class="modal-actions">
-          <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn-primary">Submit</button>
+          <button type="button" class="btn-cancel" onclick="closeModal()"><%= __('cancel') %></button>
+          <button type="submit" class="btn-primary"><%= __('submit') %></button>
         </div>
       </form>
     </div>
@@ -176,49 +175,56 @@
   <!-- Withdrawal popup -->
   <div class="modal-overlay" id="withdrawModalOverlay" onclick="if(event.target===this) closeWithdrawModal()">
     <div class="modal-box">
-      <h3>Action Required</h3>
+      <h3><%= __('action_required') %></h3>
       <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
-        For your security, withdrawals from your account are temporarily unavailable until the required verification checks have been completed.
+        <%= __('withdraw_unavailable_msg') %>
       </p>
       <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
-        Please contact our support team for assistance.
+        <%= __('contact_support_msg') %>
       </p>
       <div class="modal-actions">
-        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
-        <a href="https://wa.me/12567436235" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;"><%= __('email') %></a>
+        <a href="https://wa.me/12567436235" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;"><%= __('whatsapp') %></a>
       </div>
     </div>
   </div>
 
   <!-- Blocked account modal -->
-<% if (user.blocked) { %>
-<div class="modal-overlay open" id="blockedModalOverlay">
-  <div class="modal-box">
-    <h3>Account Restricted</h3>
-    <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
-      Your account has been temporarily blocked for the following reason:
-    </p>
-    <p style="color:#c0392b; font-weight:600; line-height:1.5; margin-bottom:20px;">
-      <%= user.block_reason %>
-    </p>
-    <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
-      Please contact our support team to resolve this issue.
-    </p>
-    <div class="modal-actions">
-      <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;">Email</a>
-      <a href="https://wa.me/12567436235" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;">WhatsApp</a>
+  <% if (user.blocked) { %>
+  <div class="modal-overlay open" id="blockedModalOverlay">
+    <div class="modal-box">
+      <h3><%= __('account_restricted') %></h3>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:14px;">
+        <%= __('account_blocked_msg') %>
+      </p>
+      <p style="color:#c0392b; font-weight:600; line-height:1.5; margin-bottom:20px;">
+        <%= user.block_reason %>
+      </p>
+      <p style="color:#33454b; line-height:1.6; margin-bottom:20px;">
+        <%= __('resolve_issue_msg') %>
+      </p>
+      <div class="modal-actions">
+        <a href="mailto:support@velnorafinance.com" class="btn-cancel" style="text-decoration:none; text-align:center; display:block;"><%= __('email') %></a>
+        <a href="https://wa.me/12567436235" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; display:block;"><%= __('whatsapp') %></a>
+      </div>
     </div>
   </div>
-</div>
-<% } %>
+  <% } %>
 
   <script>
+    // Server-rendered translations passed into JS for chart labels
+    const i18nChart = {
+      notEnoughData: "<%= __('chart_not_enough_data') %>",
+      loading: "<%= __('chart_loading') %>",
+      error: "<%= __('chart_error') %>"
+    };
+
     function openModal(type, label) {
       document.getElementById('modalType').value = type;
       document.getElementById('modalTitle').innerText = label;
       document.getElementById('modalOverlay').classList.add('open');
     }
-   function closeModal() {
+    function closeModal() {
       document.getElementById('modalOverlay').classList.remove('open');
     }
 
@@ -229,7 +235,7 @@
       document.getElementById('withdrawModalOverlay').classList.remove('open');
     }
 
-    // ---- Balance card carousel (swipe on mobile, click dots/arrows on desktop) ----
+    // ---- Balance card carousel ----
     (function () {
       const track = document.getElementById('balanceTrack');
       const dots = document.querySelectorAll('#carouselDots .dot');
@@ -251,13 +257,13 @@
         });
       });
 
-     window.addEventListener('resize', () => {
+      window.addEventListener('resize', () => {
         const activeIndex = [...dots].findIndex(d => d.classList.contains('active'));
         track.scrollTo({ left: activeIndex * track.clientWidth, behavior: 'auto' });
       });
     })();
 
-    // ---- USD/EUR trend chart (live data from Frankfurter API) ----
+    // ---- USD/EUR trend chart ----
     (function () {
       const canvas = document.getElementById('trendChart');
       const buttons = document.querySelectorAll('.trend-range-btn');
@@ -299,7 +305,7 @@
         if (points.length < 2) {
           ctx.fillStyle = '#8a97a0';
           ctx.font = '13px sans-serif';
-          ctx.fillText('Not enough data to display chart.', 16, h / 2);
+          ctx.fillText(i18nChart.notEnoughData, 16, h / 2);
           return;
         }
 
@@ -375,7 +381,7 @@
       }
 
       function setLoading() {
-        currentValueEl.textContent = 'Loading chart...';
+        currentValueEl.textContent = i18nChart.loading;
         currentValueEl.style.color = '#8a97a0';
         startLabelEl.textContent = '';
         endLabelEl.textContent = '';
@@ -384,7 +390,7 @@
       }
 
       function setError() {
-        currentValueEl.textContent = 'Unable to load live exchange rate data right now.';
+        currentValueEl.textContent = i18nChart.error;
         currentValueEl.style.color = '#c0392b';
       }
 
@@ -448,15 +454,15 @@
     })();
   </script>
 
-    <script>
-      document.getElementById('langToggle').addEventListener('click', () => {
-        document.getElementById('langMenu').classList.toggle('open');
-      });
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.lang-dropdown')) {
-          document.getElementById('langMenu').classList.remove('open');
-        }
-      });
-    </script>
+  <script>
+    document.getElementById('langToggle').addEventListener('click', () => {
+      document.getElementById('langMenu').classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.lang-dropdown')) {
+        document.getElementById('langMenu').classList.remove('open');
+      }
+    });
+  </script>
 </body>
 </html>
