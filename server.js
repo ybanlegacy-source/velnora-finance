@@ -96,21 +96,26 @@ app.get('/create-account', (req, res) => {
 });
 
 app.post('/create-account', (req, res) => {
-  const { full_name, username, password, confirmPassword } = req.body;
+  const { full_name, username, email, password, confirmPassword } = req.body;
 
-  if (!full_name || !username || !password || !confirmPassword) {
-    return res.render('create-account', { error: 'Please fill in every field.', full_name, username });
+  if (!full_name || !username || !email || !password || !confirmPassword) {
+    return res.render('create-account', { error: 'Please fill in every field.', full_name, username, email });
   }
   if (password !== confirmPassword) {
-    return res.render('create-account', { error: 'Passwords do not match.', full_name, username });
+    return res.render('create-account', { error: 'Passwords do not match.', full_name, username, email });
   }
   if (password.length < 6) {
-    return res.render('create-account', { error: 'Password must be at least 6 characters.', full_name, username });
+    return res.render('create-account', { error: 'Password must be at least 6 characters.', full_name, username, email });
   }
 
   const existing = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
   if (existing) {
-    return res.render('create-account', { error: 'That username is already taken.', full_name, username: '' });
+    return res.render('create-account', { error: 'That username is already taken.', full_name, username: '', email });
+  }
+
+  const existingEmail = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+  if (existingEmail) {
+    return res.render('create-account', { error: 'That email is already registered.', full_name, username, email: '' });
   }
 
   const passwordHash = bcrypt.hashSync(password, 10);
@@ -118,9 +123,9 @@ app.post('/create-account', (req, res) => {
   const savingsAccountNumber = randomAccountNumber();
 
   const result = db.prepare(`
-    INSERT INTO users (username, password_hash, role, full_name, account_number, balance, total_credit, total_charge, savings_balance, savings_account_number)
-    VALUES (?, ?, 'user', ?, ?, 0, 0, 0, 0, ?)
-  `).run(username, passwordHash, full_name, checkingAccountNumber, savingsAccountNumber);
+    INSERT INTO users (username, password_hash, role, full_name, email, account_number, balance, total_credit, total_charge, savings_balance, savings_account_number)
+    VALUES (?, ?, 'user', ?, ?, ?, 0, 0, 0, 0, ?)
+  `).run(username, passwordHash, full_name, email, checkingAccountNumber, savingsAccountNumber);
 
   req.session.userId = result.lastInsertRowid;
   req.session.role = 'user';

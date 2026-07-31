@@ -27,6 +27,7 @@
         <thead>
         <tr>
             <th>User</th>
+            <th>Email</th>
             <th>Account</th>
             <th>Checking balance</th>
             <th>Savings balance</th>
@@ -40,6 +41,7 @@
           <% users.forEach(u => { %>
             <tr>
               <td data-label="User"><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span></td>
+              <td data-label="Email"><%= u.email || '—' %></td>
               <td data-label="Account"><%= u.account_number %><br><span style="color:#8a97a0;"><%= u.savings_account_number %></span></td>
               <td data-label="Checking balance"><%= fmtMoney(u.balance) %></td>
               <td data-label="Savings balance"><%= fmtMoney(u.savings_balance || 0) %></td>
