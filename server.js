@@ -12,6 +12,9 @@ const db = require('./db');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
+const i18n = require('i18n');
+const cookieParser = require('cookie-parser');
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT || '587', 10),
@@ -25,6 +28,17 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+i18n.configure({
+  locales: ['en', 'fr', 'de', 'es'],
+  directory: __dirname + '/locales',
+  defaultLocale: 'en',
+  cookie: 'lang',
+  queryParameter: 'lang',
+  autoReload: true,
+  updateFiles: false,
+  syncFiles: false
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -32,6 +46,9 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 app.use(express.static(__dirname + '/public'));
+
+app.use(cookieParser());
+app.use(i18n.init);
 
 app.use(session({
   secret: 'demo-school-project-secret-change-me',
@@ -228,8 +245,14 @@ app.post('/kyc/verify-captcha', requireLogin, (req, res) => {
   res.render('kyc', { user: updatedUser, question, error: null });
 });
 
-
-
+// ---------- language switch ----------
+app.get('/set-language/:lang', (req, res) => {
+  const allowed = ['en', 'fr', 'de', 'es'];
+  const lang = allowed.includes(req.params.lang) ? req.params.lang : 'en';
+  res.cookie('lang', lang, { maxAge: 1000 * 60 * 60 * 24 * 365 });
+  const back = req.get('referer') || '/dashboard';
+  res.redirect(back);
+});
 
 // ---------- cards ----------
 app.get('/cards', requireLogin, (req, res) => {

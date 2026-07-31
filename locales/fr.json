@@ -1,0 +1,10 @@
+{
+  "welcome_back": "Bon retour",
+  "checking_balance": "Solde du compte courant",
+  "account_number": "Numéro de compte",
+  "total_credit": "Total des crédits",
+  "total_charge": "Total des débits",
+  "savings_balance": "Solde d'épargne",
+  "recent_activity": "Activité récente",
+  "logout": "Déconnexion"
+}

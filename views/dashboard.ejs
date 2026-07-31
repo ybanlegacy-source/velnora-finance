@@ -14,17 +14,29 @@
     <div class="topbar">
       <!-- Single header row at every screen size: language left, logo centered, avatar right -->
       <div class="topbar-row-mobile">
-        <div class="lang-pill">🇬🇧 English</div>
+        <div class="lang-dropdown">
+          <button class="lang-pill" id="langToggle" type="button">
+            <%= locale === 'fr' ? '🇫🇷 Français' : locale === 'de' ? '🇩🇪 Deutsch' : locale === 'es' ? '🇪🇸 Español' : '🇬🇧 English' %>
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 3l4 4 4-4" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <a href="/set-language/en" class="lang-option">🇬🇧 English</a>
+            <a href="/set-language/fr" class="lang-option">🇫🇷 Français</a>
+            <a href="/set-language/de" class="lang-option">🇩🇪 Deutsch</a>
+            <a href="/set-language/es" class="lang-option">🇪🇸 Español</a>
+          </div>
+        </div>
        
         <div class="avatar"><%= user.full_name ? user.full_name[0] : 'U' %></div>
       </div>
+      
       <div class="brand-mark">Welcome Back</div>
 
       <div class="balance-carousel">
         <div class="balance-track" id="balanceTrack">
 
           <div class="balance-card">
-            <div class="label-pill">Check in balance</div>
+            <div class="label-pill">Checking Balance</div>
             <div class="balance-amount"><%= fmtMoney(user.balance) %></div>
 
          <div class="label-pill">Account number</div>
@@ -435,5 +447,16 @@
       loadRange('1M');
     })();
   </script>
+
+    <script>
+      document.getElementById('langToggle').addEventListener('click', () => {
+        document.getElementById('langMenu').classList.toggle('open');
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.lang-dropdown')) {
+          document.getElementById('langMenu').classList.remove('open');
+        }
+      });
+    </script>
 </body>
 </html>

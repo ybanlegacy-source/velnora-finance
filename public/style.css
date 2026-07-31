@@ -2829,3 +2829,26 @@ th { color: #667; font-size: 0.72rem; text-transform: uppercase; letter-spacing:
     font-size:1rem;
 }
 }
+
+.lang-dropdown { position: relative; }
+.lang-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  overflow: hidden;
+  min-width: 140px;
+  z-index: 50;
+}
+.lang-menu.open { display: block; }
+.lang-option {
+  display: block;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #222;
+  font-size: 14px;
+}
+.lang-option:hover { background: #f2f2f2; }

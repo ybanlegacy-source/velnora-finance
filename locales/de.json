@@ -1,0 +1,10 @@
+{
+  "welcome_back": "Willkommen zurück",
+  "checking_balance": "Girokontostand",
+  "account_number": "Kontonummer",
+  "total_credit": "Gesamtguthaben",
+  "total_charge": "Gesamtbelastung",
+  "savings_balance": "Sparguthaben",
+  "recent_activity": "Letzte Aktivitäten",
+  "logout": "Abmelden"
+}

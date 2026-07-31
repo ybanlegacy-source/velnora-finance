@@ -1,0 +1,10 @@
+{
+  "welcome_back": "Bienvenido de nuevo",
+  "checking_balance": "Saldo de la cuenta corriente",
+  "account_number": "Número de cuenta",
+  "total_credit": "Crédito total",
+  "total_charge": "Cargo total",
+  "savings_balance": "Saldo de ahorros",
+  "recent_activity": "Actividad reciente",
+  "logout": "Cerrar sesión"
+}
