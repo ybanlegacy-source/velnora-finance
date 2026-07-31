@@ -37,5 +37,13 @@
   "chart_not_enough_data": "No hay suficientes datos para mostrar el gráfico.",
   "chart_loading": "Cargando gráfico...",
   "chart_error": "No se pueden cargar los datos de tipo de cambio en vivo en este momento.",
-  "logout": "Cerrar sesión"
+  "logout": "Cerrar sesión",
+  "kyc_demo_banner": "Proyecto escolar — la verificación aquí es un simple CAPTCHA con fines de demostración en clase",
+  "kyc_title": "Verificación de cuenta",
+  "kyc_subtitle": "Para demostrar que no eres un robot, completa la verificación rápida a continuación para validar tu cuenta.",
+  "kyc_verified_title": "Estás verificado",
+  "kyc_verified_msg": "Tu cuenta está completamente verificada. No se requiere ninguna otra acción.",
+  "kyc_question_prefix": "Cuánto es",
+  "kyc_answer_placeholder": "Tu respuesta",
+  "verify": "Verificar"
 }

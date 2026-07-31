@@ -37,5 +37,13 @@
   "chart_not_enough_data": "Nicht genügend Daten zur Anzeige des Diagramms.",
   "chart_loading": "Diagramm wird geladen...",
   "chart_error": "Live-Wechselkursdaten können derzeit nicht geladen werden.",
-  "logout": "Abmelden"
+  "logout": "Abmelden",
+  "kyc_demo_banner": "Schulprojekt — die Verifizierung hier ist ein einfaches CAPTCHA zu Demonstrationszwecken im Unterricht",
+  "kyc_title": "Kontoverifizierung",
+  "kyc_subtitle": "Um zu beweisen, dass Sie kein Roboter sind, führen Sie die kurze Prüfung unten durch, um Ihr Konto zu verifizieren.",
+  "kyc_verified_title": "Sie sind verifiziert",
+  "kyc_verified_msg": "Ihr Konto ist vollständig verifiziert. Es ist keine weitere Aktion erforderlich.",
+  "kyc_question_prefix": "Wie viel ist",
+  "kyc_answer_placeholder": "Ihre Antwort",
+  "verify": "Verifizieren"
 }

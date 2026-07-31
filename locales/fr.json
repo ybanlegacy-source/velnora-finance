@@ -37,5 +37,13 @@
   "chart_not_enough_data": "Pas assez de données pour afficher le graphique.",
   "chart_loading": "Chargement du graphique...",
   "chart_error": "Impossible de charger les données de taux de change en direct pour le moment.",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "kyc_demo_banner": "Projet scolaire — la vérification ici est un simple CAPTCHA à des fins de démonstration en classe",
+  "kyc_title": "Vérification du compte",
+  "kyc_subtitle": "Pour prouver que vous n'êtes pas un robot, complétez la vérification rapide ci-dessous pour valider votre compte.",
+  "kyc_verified_title": "Vous êtes vérifié",
+  "kyc_verified_msg": "Votre compte est entièrement vérifié. Aucune autre action n'est requise.",
+  "kyc_question_prefix": "Combien font",
+  "kyc_answer_placeholder": "Votre réponse",
+  "verify": "Vérifier"
 }

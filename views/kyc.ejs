@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= locale %>">
 <head>
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta charset="UTF-8">
@@ -8,21 +8,21 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="banner">Demo project — verification here is a simple CAPTCHA for class demonstration purposes</div>
+  <div class="banner"><%= __('kyc_demo_banner') %></div>
   <%- include('partials/app-header') %>
 
   <div class="kyc-page-wrap">
     <div class="kyc-page-header">
-      <h1>Account Verification</h1>
-      <p>To prove that you're not a robot, complete the quick check below to verify your account.</p>
+      <h1><%= __('kyc_title') %></h1>
+      <p><%= __('kyc_subtitle') %></p>
     </div>
 
     <% if (user.email_verified) { %>
       <div class="kyc-status-card kyc-status-approved">
         <div class="kyc-status-icon">✅</div>
         <div>
-          <h2>You're verified</h2>
-          <p>Your account is fully verified. No further action is needed.</p>
+          <h2><%= __('kyc_verified_title') %></h2>
+          <p><%= __('kyc_verified_msg') %></p>
         </div>
       </div>
 
@@ -33,11 +33,11 @@
 
       <form method="POST" action="/kyc/verify-captcha" class="loan-section-card" style="text-align:center;">
         <p style="margin-bottom:16px; color:#33454b; font-size:1.05rem;">
-          What is <strong><%= question %></strong>?
+          <%= __('kyc_question_prefix') %> <strong><%= question %></strong>?
         </p>
-        <input type="number" name="captchaAnswer" placeholder="Your answer" required
+        <input type="number" name="captchaAnswer" placeholder="<%= __('kyc_answer_placeholder') %>" required
                style="max-width:200px; margin:0 auto 20px; display:block; text-align:center; font-size:1.1rem;">
-        <button type="submit" class="btn-hero-primary loan-submit-btn">Verify</button>
+        <button type="submit" class="btn-hero-primary loan-submit-btn"><%= __('verify') %></button>
       </form>
     <% } %>
   </div>

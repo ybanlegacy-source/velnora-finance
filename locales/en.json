@@ -37,5 +37,13 @@
   "chart_not_enough_data": "Not enough data to display chart.",
   "chart_loading": "Loading chart...",
   "chart_error": "Unable to load live exchange rate data right now.",
-  "logout": "Logout"
+  "logout": "Logout",
+  "kyc_demo_banner": "Demo project — verification here is a simple CAPTCHA for class demonstration purposes",
+  "kyc_title": "Account Verification",
+  "kyc_subtitle": "To prove that you're not a robot, complete the quick check below to verify your account.",
+  "kyc_verified_title": "You're verified",
+  "kyc_verified_msg": "Your account is fully verified. No further action is needed.",
+  "kyc_question_prefix": "What is",
+  "kyc_answer_placeholder": "Your answer",
+  "verify": "Verify"
 }
