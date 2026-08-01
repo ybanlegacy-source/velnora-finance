@@ -388,7 +388,7 @@ app.get('/admin', requireAdmin, (req, res) => {
 // Admin directly edits a user's balance (demo-only mechanism).
 // Every change is written to balance_log for a visible audit trail.
 app.post('/admin/set-balance', requireAdmin, (req, res) => {
-  const { userId, amount, transactionType, reason } = req.body;
+  const { userId, amount, reason } = req.body;
   const field = req.body.field === 'savings_balance' ? 'savings_balance' : 'balance';
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
@@ -398,23 +398,15 @@ app.post('/admin/set-balance', requireAdmin, (req, res) => {
   if (isNaN(amt) || amt <= 0) return res.redirect('/admin?msg=Invalid amount');
 
   const oldBalance = user[field];
-  const isCredit = transactionType !== 'debit';
-
-  // Checking balance simply displays the amount just entered by the admin.
-  const nb = amt;
+  const nb = amt; // checking balance shows the amount just entered
 
   const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
 
   db.prepare(`UPDATE users SET ${field} = ? WHERE id = ?`).run(nb, userId);
 
   if (field === 'balance') {
-    if (isCredit) {
-      // total_credit = balance before this transaction + the new amount credited
-      db.prepare('UPDATE users SET total_credit = ? WHERE id = ?').run(oldBalance + amt, userId);
-    } else {
-      // Mirrors the same logic for debits — see note below
-      db.prepare('UPDATE users SET total_charge = ? WHERE id = ?').run(oldBalance + amt, userId);
-    }
+    // total_credit accumulates across every update, forever
+    db.prepare('UPDATE users SET total_credit = total_credit + ? WHERE id = ?').run(amt, userId);
   }
 
   db.prepare(`

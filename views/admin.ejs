@@ -79,16 +79,12 @@
   <% } %>
 </td>
 
-             <td data-label="Set new balance">
+   <td data-label="Set new balance">
   <form class="edit-form" method="POST" action="/admin/set-balance">
     <input type="hidden" name="userId" value="<%= u.id %>">
     <select name="field">
       <option value="balance">Checking</option>
       <option value="savings_balance">Savings</option>
-    </select>
-    <select name="transactionType">
-      <option value="credit">Credit</option>
-      <option value="debit">Debit</option>
     </select>
     <input type="number" step="0.01" name="amount" placeholder="Amount" required>
     <input type="text" name="reason" placeholder="Reason (e.g. class demo #3)">

@@ -42,15 +42,11 @@
             <div class="acct-number">•••• <%= user.account_number ? user.account_number.replace('****','') : '0000' %></div>
 
             <div class="stats-row">
-              <div class="stat-box">
-                <div class="label-pill"><%= __('total_credit') %></div>
-                <div class="stat-value"><%= fmtMoney(user.total_credit) %></div>
-              </div>
-              <div class="stat-box">
-                <div class="label-pill"><%= __('total_charge') %></div>
-                <div class="stat-value"><%= fmtMoney(user.total_charge) %></div>
-              </div>
-            </div>
+  <div class="stat-box" style="flex: 1;">
+    <div class="label-pill"><%= __('total_credit') %></div>
+    <div class="stat-value"><%= fmtMoney(user.total_credit) %></div>
+  </div>
+</div>
           </div>
           <div class="balance-card">
             <div class="label-pill"><%= __('savings_balance') %></div>
