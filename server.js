@@ -388,35 +388,39 @@ app.get('/admin', requireAdmin, (req, res) => {
 // Admin directly edits a user's balance (demo-only mechanism).
 // Every change is written to balance_log for a visible audit trail.
 app.post('/admin/set-balance', requireAdmin, (req, res) => {
-  const { userId, newBalance, reason } = req.body;
+  const { userId, amount, transactionType, reason } = req.body;
   const field = req.body.field === 'savings_balance' ? 'savings_balance' : 'balance';
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
   if (!user) return res.redirect('/admin?msg=User not found');
 
+  const amt = parseFloat(amount);
+  if (isNaN(amt) || amt <= 0) return res.redirect('/admin?msg=Invalid amount');
+
   const oldBalance = user[field];
-  const nb = parseFloat(newBalance);
-  if (isNaN(nb)) return res.redirect('/admin?msg=Invalid amount');
+  const isCredit = transactionType !== 'debit';
 
-const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
+  // Checking balance simply displays the amount just entered by the admin.
+  const nb = amt;
 
-db.prepare(`UPDATE users SET ${field} = ? WHERE id = ?`).run(nb, userId);
+  const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
 
-// Keep total_credit / total_charge in sync whenever the checking
-// balance itself is what's being edited by the admin.
-if (field === 'balance') {
-  const diff = nb - oldBalance;
-  if (diff > 0) {
-    db.prepare('UPDATE users SET total_credit = total_credit + ? WHERE id = ?').run(diff, userId);
-  } else if (diff < 0) {
-    db.prepare('UPDATE users SET total_charge = total_charge + ? WHERE id = ?').run(Math.abs(diff), userId);
+  db.prepare(`UPDATE users SET ${field} = ? WHERE id = ?`).run(nb, userId);
+
+  if (field === 'balance') {
+    if (isCredit) {
+      // total_credit = balance before this transaction + the new amount credited
+      db.prepare('UPDATE users SET total_credit = ? WHERE id = ?').run(oldBalance + amt, userId);
+    } else {
+      // Mirrors the same logic for debits — see note below
+      db.prepare('UPDATE users SET total_charge = ? WHERE id = ?').run(oldBalance + amt, userId);
+    }
   }
-}
 
-db.prepare(`
-  INSERT INTO balance_log (user_id, changed_by, field, old_balance, new_balance, reason)
-  VALUES (?, ?, ?, ?, ?, ?)
-`).run(userId, admin.username, field, oldBalance, nb, reason || '');
+  db.prepare(`
+    INSERT INTO balance_log (user_id, changed_by, field, old_balance, new_balance, reason)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(userId, admin.username, field, oldBalance, nb, reason || '');
 
   res.redirect('/admin?msg=' + (field === 'savings_balance' ? 'Savings balance' : 'Balance') + ' updated for ' + user.username);
 });
