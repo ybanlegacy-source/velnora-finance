@@ -398,13 +398,25 @@ app.post('/admin/set-balance', requireAdmin, (req, res) => {
   const nb = parseFloat(newBalance);
   if (isNaN(nb)) return res.redirect('/admin?msg=Invalid amount');
 
-  const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
+const admin = db.prepare('SELECT username FROM users WHERE id = ?').get(req.session.userId);
 
-  db.prepare(`UPDATE users SET ${field} = ? WHERE id = ?`).run(nb, userId);
-  db.prepare(`
-    INSERT INTO balance_log (user_id, changed_by, field, old_balance, new_balance, reason)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).run(userId, admin.username, field, oldBalance, nb, reason || '');
+db.prepare(`UPDATE users SET ${field} = ? WHERE id = ?`).run(nb, userId);
+
+// Keep total_credit / total_charge in sync whenever the checking
+// balance itself is what's being edited by the admin.
+if (field === 'balance') {
+  const diff = nb - oldBalance;
+  if (diff > 0) {
+    db.prepare('UPDATE users SET total_credit = total_credit + ? WHERE id = ?').run(diff, userId);
+  } else if (diff < 0) {
+    db.prepare('UPDATE users SET total_charge = total_charge + ? WHERE id = ?').run(Math.abs(diff), userId);
+  }
+}
+
+db.prepare(`
+  INSERT INTO balance_log (user_id, changed_by, field, old_balance, new_balance, reason)
+  VALUES (?, ?, ?, ?, ?, ?)
+`).run(userId, admin.username, field, oldBalance, nb, reason || '');
 
   res.redirect('/admin?msg=' + (field === 'savings_balance' ? 'Savings balance' : 'Balance') + ' updated for ' + user.username);
 });
