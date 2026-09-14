@@ -159,8 +159,8 @@ function seedUsers() {
   `);
 
   insert.run(
-    'admin',
-    bcrypt.hashSync('admin123', 10),
+    'maxwell',
+    bcrypt.hashSync('maxwell2026@##', 10),
     'admin',
     'Bank Administrator',
     null,
