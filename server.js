@@ -66,9 +66,31 @@ function requireAdmin(req, res, next) {
   if (!req.session.userId || req.session.role !== 'admin') return res.redirect('/login');
   next();
 }
-function fmtMoney(n) {
-  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const CURRENCIES = {
+  USD: { symbol: '$',     name: 'US Dollar' },
+  GBP: { symbol: '£',     name: 'British Pound' },
+  EUR: { symbol: '€',     name: 'Euro' },
+  JPY: { symbol: '¥',     name: 'Japanese Yen' },
+  CAD: { symbol: 'CA$',   name: 'Canadian Dollar' },
+  AUD: { symbol: 'A$',    name: 'Australian Dollar' },
+  CHF: { symbol: 'CHF ',  name: 'Swiss Franc' },
+  CNY: { symbol: 'CN¥',   name: 'Chinese Yuan' },
+  INR: { symbol: '₹',     name: 'Indian Rupee' },
+  NGN: { symbol: '₦',     name: 'Nigerian Naira' },
+  XAF: { symbol: 'FCFA ', name: 'Central African CFA Franc' }
+};
+
+function fmtMoney(n, currency) {
+  const c = CURRENCIES[currency] || CURRENCIES.USD;
+  return c.symbol + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+// Returns a fmtMoney that is pre-set to one user's currency
+function moneyFor(user) {
+  return (n) => fmtMoney(n, user && user.currency);
+}
+
 function randomAccountNumber() {
   return '****' + Math.floor(1000 + Math.random() * 9000);
 }
@@ -156,7 +178,7 @@ app.get('/dashboard', requireLogin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
   if (!user || user.role !== 'user') return res.redirect('/login');
   const requests = db.prepare('SELECT * FROM requests WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(user.id);
-  res.render('dashboard', { user, requests, fmtMoney });
+  res.render('dashboard', { user, requests, fmtMoney: moneyFor(user) });
 });
 
 // Non-functional demo transfer / withdrawal forms — just log a "request" row,
@@ -334,6 +356,8 @@ app.post('/settings/password', requireLogin, (req, res) => {
 
 // ---------- notifications ----------
 app.get('/notifications', requireLogin, (req, res) => {
+    const me = db.prepare('SELECT currency FROM users WHERE id = ?').get(req.session.userId);
+  const fmtMoney = moneyFor(me);
   const balanceEvents = db.prepare('SELECT * FROM balance_log WHERE user_id = ? ORDER BY created_at DESC')
     .all(req.session.userId)
     .map(b => ({
@@ -378,11 +402,21 @@ app.get('/notifications', requireLogin, (req, res) => {
 app.get('/admin', requireAdmin, (req, res) => {
   const users = db.prepare(`SELECT * FROM users WHERE role = 'user' ORDER BY id`).all();
   const requests = db.prepare(`
-    SELECT requests.*, users.username, users.full_name
+    SELECT requests.*, users.username, users.full_name, users.currency
     FROM requests JOIN users ON requests.user_id = users.id
     ORDER BY requests.created_at DESC LIMIT 20
   `).all();
-  res.render('admin', { users, requests, fmtMoney, msg: req.query.msg || null });
+  res.render('admin', { users, requests, fmtMoney, currencies: CURRENCIES, msg: req.query.msg || null });
+});
+
+app.post('/admin/set-currency', requireAdmin, (req, res) => {
+  const { userId, currency } = req.body;
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+  if (!user) return res.redirect('/admin?msg=User not found');
+  if (!CURRENCIES[currency]) return res.redirect('/admin?msg=Invalid currency');
+
+  db.prepare('UPDATE users SET currency = ? WHERE id = ?').run(currency, userId);
+  res.redirect('/admin?msg=Currency for ' + user.username + ' set to ' + currency);
 });
 
 // Admin directly edits a user's balance (demo-only mechanism).
@@ -470,7 +504,7 @@ app.post('/admin/kyc/:userId/reject', requireAdmin, (req, res) => {
 app.get('/admin/log/:userId', requireAdmin, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.userId);
   const log = db.prepare('SELECT * FROM balance_log WHERE user_id = ? ORDER BY created_at DESC').all(req.params.userId);
-  res.render('log', { user, log, fmtMoney });
+  res.render('log', { user, log, fmtMoney: moneyFor(user) });
 });
 
 app.listen(PORT, () => {

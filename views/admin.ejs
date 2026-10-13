@@ -31,6 +31,7 @@
             <th>Account</th>
             <th>Checking balance</th>
             <th>Savings balance</th>
+            <th>Currency</th>
             <th>Verification</th>
             <th>Block</th>
             <th>Set new balance</th>
@@ -43,8 +44,18 @@
               <td data-label="User"><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span></td>
               <td data-label="Email"><%= u.email || '—' %></td>
               <td data-label="Account"><%= u.account_number %><br><span style="color:#8a97a0;"><%= u.savings_account_number %></span></td>
-              <td data-label="Checking balance"><%= fmtMoney(u.balance) %></td>
-              <td data-label="Savings balance"><%= fmtMoney(u.savings_balance || 0) %></td>
+              <td data-label="Checking balance"><%= fmtMoney(u.balance, u.currency) %></td>
+<td data-label="Savings balance"><%= fmtMoney(u.savings_balance || 0, u.currency) %></td>
+<td data-label="Currency">
+  <form class="edit-form" method="POST" action="/admin/set-currency">
+    <input type="hidden" name="userId" value="<%= u.id %>">
+    <select name="currency" onchange="this.form.submit()">
+      <% Object.entries(currencies).forEach(([code, c]) => { %>
+        <option value="<%= code %>" <%= (u.currency || 'USD') === code ? 'selected' : '' %>><%= code %> — <%= c.name %></option>
+      <% }) %>
+    </select>
+  </form>
+</td>
               <td data-label="Verification">
                 <% if (u.kyc_status === 'approved') { %>
                   <span class="pill-badge pill-approved">Approved</span>
@@ -112,7 +123,7 @@
               <tr>
                 <td data-label="User"><%= r.full_name %> (@<%= r.username %>)</td>
                 <td data-label="Type"><span class="pill-badge"><%= r.type.replace('_',' ') %></span></td>
-                <td data-label="Amount"><%= fmtMoney(r.amount) %></td>
+                <td data-label="Amount"><%= fmtMoney(r.amount, r.currency) %></td>
                 <td data-label="Note"><%= r.note %></td>
                 <td data-label="Date"><%= new Date(r.created_at).toLocaleString() %></td>
               </tr>

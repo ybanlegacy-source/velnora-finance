@@ -145,6 +145,7 @@ tryAlter(`ALTER TABLE loan_requests ADD COLUMN city TEXT`);
 tryAlter(`ALTER TABLE loan_requests ADD COLUMN signature TEXT`);
 tryAlter(`ALTER TABLE loan_requests ADD COLUMN loan_type TEXT`);
 tryAlter(`ALTER TABLE users ADD COLUMN kyc_status TEXT NOT NULL DEFAULT 'not_submitted'`);
+tryAlter(`ALTER TABLE users ADD COLUMN currency TEXT NOT NULL DEFAULT 'USD'`);
 
 function seedUsers() {
   const existing = db.prepare('SELECT COUNT(*) AS c FROM users').get();
