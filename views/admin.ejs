@@ -23,6 +23,19 @@
 
     <div class="card">
       <h3 style="margin-top:0; color:#0b4a5c;">Users &amp; balances</h3>
+      <form method="GET" action="/admin" style="margin-bottom:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+  <label for="rangeFilter" style="color:#33454b; font-weight:600;">Show accounts created:</label>
+  <select name="range" id="rangeFilter" onchange="this.form.submit()">
+    <option value="all" <%= range === 'all' ? 'selected' : '' %>>All time</option>
+    <option value="24h" <%= range === '24h' ? 'selected' : '' %>>Last 24 hours</option>
+    <option value="1w"  <%= range === '1w'  ? 'selected' : '' %>>Last 1 week</option>
+    <option value="1m"  <%= range === '1m'  ? 'selected' : '' %>>Last 1 month</option>
+    <option value="3m"  <%= range === '3m'  ? 'selected' : '' %>>Last 3 months</option>
+    <option value="6m"  <%= range === '6m'  ? 'selected' : '' %>>Last 6 months</option>
+    <option value="1y"  <%= range === '1y'  ? 'selected' : '' %>>Last 1 year</option>
+  </select>
+  <span style="color:#8a97a0;"><%= users.length %> account<%= users.length === 1 ? '' : 's' %> found</span>
+</form>
       <table class="admin-table">
         <thead>
         <tr>
@@ -39,9 +52,12 @@
           </tr>
         </thead>
         <tbody>
-          <% users.forEach(u => { %>
+           <% if (users.length === 0) { %>
+             <tr><td colspan="10" style="text-align:center; color:#8a97a0; padding:24px;">No accounts were created in this period.</td></tr>
+<% } %>
+<% users.forEach(u => { %>
             <tr>
-              <td data-label="User"><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span></td>
+              <td data-label="User"><strong><%= u.full_name %></strong><br><span style="color:#8a97a0;">@<%= u.username %></span><br><span style="color:#8a97a0; font-size:0.75rem;">Joined <%= u.created_at ? u.created_at.slice(0, 10) : '—' %></span></td>
               <td data-label="Email"><%= u.email || '—' %></td>
               <td data-label="Account"><%= u.account_number %><br><span style="color:#8a97a0;"><%= u.savings_account_number %></span></td>
               <td data-label="Checking balance"><%= fmtMoney(u.balance, u.currency) %></td>

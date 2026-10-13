@@ -399,14 +399,40 @@ app.get('/notifications', requireLogin, (req, res) => {
 });
 
 // ---------- admin ----------
+
+const RANGE_FILTERS = {
+  '24h': '-1 day',
+  '1w':  '-7 days',
+  '1m':  '-1 month',
+  '3m':  '-3 months',
+  '6m':  '-6 months',
+  '1y':  '-1 year'
+};
+
 app.get('/admin', requireAdmin, (req, res) => {
-  const users = db.prepare(`SELECT * FROM users WHERE role = 'user' ORDER BY id`).all();
+  const range = RANGE_FILTERS[req.query.range] ? req.query.range : 'all';
+
+  let users;
+  if (range === 'all') {
+    users = db.prepare(`SELECT * FROM users WHERE role = 'user' ORDER BY id DESC`).all();
+  } else {
+    users = db.prepare(`
+      SELECT * FROM users
+      WHERE role = 'user' AND created_at >= datetime('now', ?)
+      ORDER BY id DESC
+    `).all(RANGE_FILTERS[range]);
+  }
+
   const requests = db.prepare(`
     SELECT requests.*, users.username, users.full_name, users.currency
     FROM requests JOIN users ON requests.user_id = users.id
     ORDER BY requests.created_at DESC LIMIT 20
   `).all();
-  res.render('admin', { users, requests, fmtMoney, currencies: CURRENCIES, msg: req.query.msg || null });
+
+  res.render('admin', {
+    users, requests, fmtMoney, currencies: CURRENCIES,
+    range, msg: req.query.msg || null
+  });
 });
 
 app.post('/admin/set-currency', requireAdmin, (req, res) => {
